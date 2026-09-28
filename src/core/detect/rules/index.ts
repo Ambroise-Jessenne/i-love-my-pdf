@@ -6,5 +6,17 @@ import { phoneRule } from './phone';
 import { ibanRule } from './iban';
 import { nirRule } from './nir';
 import { cardRule } from './card';
+import { dateRules } from './date';
+import { addressRules } from './address';
 
-export const RULES: Rule[] = [ibanRule, nirRule, cardRule, urlRule, emailRule, phoneRule, ipRule];
+export const RULES: Rule[] = [
+  ...addressRules,
+  ibanRule,
+  nirRule,
+  cardRule,
+  urlRule,
+  emailRule,
+  phoneRule,
+  ...dateRules,
+  ipRule,
+];
