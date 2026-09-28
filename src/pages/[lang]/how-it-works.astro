@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDict, langPaths, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+---
+
+<BaseLayout lang={lang} title={t.how.title}>
+  <h1>{t.how.title}</h1>
+  <p class="lead">{t.how.intro}</p>
+  <div class="sections">
+    {
+      t.how.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <p>{section.text}</p>
+        </section>
+      ))
+    }
+  </div>
+  <p class="acronym">{t.how.acronym}</p>
+</BaseLayout>
+
+<style>
+  .sections {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+  }
+
+  .sections section {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .sections h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  .sections p {
+    margin: 0;
+  }
+
+  .acronym {
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-pill);
+    background: var(--color-highlight);
+    font-weight: 600;
+    text-align: center;
+  }
+</style>

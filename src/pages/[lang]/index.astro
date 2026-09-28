@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDict, langPaths, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+const tools = [
+  { key: 'filter', href: `/${lang}/filter/` },
+  { key: 'merge', href: null },
+  { key: 'split', href: null },
+  { key: 'pdfToWord', href: null },
+  { key: 'wordToPdf', href: null },
+] as const;
+---
+
+<BaseLayout lang={lang}>
+  <section class="hero">
+    <h1>{t.home.title}</h1>
+    <p class="lead">{t.home.subtitle}</p>
+    <div class="hero-actions">
+      <a class="btn" href={`/${lang}/filter/`}>{t.home.cta}</a>
+      <a class="btn btn-secondary" href={`/${lang}/how-it-works/`}>{t.home.ctaSecondary}</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="tools-title">
+    <h2 id="tools-title">{t.home.toolsTitle}</h2>
+    <ul class="tools">
+      {
+        tools.map((tool) => (
+          <li class:list={['tool-card', { 'is-soon': !tool.href }]}>
+            <h3>{tool.href ? <a href={tool.href}>{t.home.tools[tool.key].name}</a> : t.home.tools[tool.key].name}</h3>
+            <p>{t.home.tools[tool.key].desc}</p>
+            {!tool.href && <span class="badge">{t.home.soon}</span>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="proofs-title" class="proofs">
+    <h2 id="proofs-title">{t.home.proofsTitle}</h2>
+    <ul>
+      {
+        t.home.proofs.map((proof) => (
+          <li>
+            <h3>{proof.title}</h3>
+            <p>{proof.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: var(--space-6) 0 var(--space-7);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .tools,
+  .proofs ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-7);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+
+  .tool-card {
+    position: relative;
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .tool-card a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .tool-card a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .tool-card:not(.is-soon):hover {
+    outline: 2px solid var(--color-accent-soft);
+  }
+
+  .tool-card p {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .is-soon {
+    opacity: 0.7;
+  }
+
+  .badge {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-highlight-off);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .proofs li {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border);
+  }
+
+  .proofs li p {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>
