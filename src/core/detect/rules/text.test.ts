@@ -52,4 +52,8 @@ describe('addressRules', () => {
   it('ignores numbers that are not addresses', () => {
     expect(values("J'ai 3 chats et 2 chiens")).toEqual([]);
   });
+
+  it('keeps typographic apostrophes inside the street name', () => {
+    expect(values('au 3 rue de l’Église.')).toEqual(['3 rue de l’Église']);
+  });
 });

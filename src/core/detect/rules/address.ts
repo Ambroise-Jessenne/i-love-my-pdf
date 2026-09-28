@@ -4,8 +4,8 @@ const NUMBER = '\\b\\d{1,4}(?: ?(?:bis|ter|BIS|TER))?,? ';
 const STREET_TYPE =
   '(?:[Rr]ue|[Aa]venue|[Aa]v\\.|[Bb]oulevard|[Bb]d|[Pp]lace|[Cc]hemin|[Aa]ll[ée]e|[Ii]mpasse|[Rr]oute|[Qq]uai|[Cc]ours|[Ss]quare)';
 const STREET_TYPE_CAPS = '(?:RUE|AVENUE|AV\\.|BOULEVARD|BD|PLACE|CHEMIN|ALL[ÉE]E|IMPASSE|ROUTE|QUAI|COURS|SQUARE)';
-const WORD = "[A-Za-zÀ-ÿ''-]+";
-const WORD_CAPS = "[A-ZÀ-Þ''-]+";
+const WORD = "[A-Za-zÀ-ÿ'\\u2019-]+";
+const WORD_CAPS = "[A-ZÀ-Þ'\\u2019-]+";
 const CITY = `[A-ZÀ-Þ]${WORD}(?: [A-ZÀ-Þ]${WORD})*`;
 const CITY_CAPS = `${WORD_CAPS}(?: ${WORD_CAPS})*`;
 
