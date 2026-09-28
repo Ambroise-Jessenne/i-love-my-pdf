@@ -90,7 +90,7 @@ test('refuses unsupported file types with a clear message', async ({ page }) => 
     buffer: Buffer.from([0x89, 0x50, 0x4e, 0x47]),
   });
   await expect(page.getByRole('alert')).toHaveText(
-    'Ce type de fichier n’est pas encore pris en charge. Utilisez un fichier .txt.',
+    'Ce type de fichier n’est pas pris en charge. Utilisez un fichier .txt, .docx ou .pdf.',
   );
 });
 
