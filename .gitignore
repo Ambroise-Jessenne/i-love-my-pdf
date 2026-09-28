@@ -9,3 +9,6 @@ playwright-report/
 # Magritte's paintings are copyrighted until 2037: replace them before the public launch.
 src/assets/images/fils-homme.jpeg
 src/assets/images/fils-homme-nu.png
+
+# pdf.js runtime data, copied from node_modules by scripts/copy-pdfjs-assets.mjs
+public/pdfjs/
