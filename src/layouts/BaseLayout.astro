@@ -1,0 +1,65 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+import { getDict, otherLang, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+}
+
+const { lang, title } = Astro.props;
+const t = getDict(lang);
+const alt = otherLang(lang);
+const altPath = Astro.url.pathname.replace(/^\/(fr|en)(?=\/|$)/, `/${alt}`);
+// 'unsafe-inline' is required by Astro's island bootstrap script; connect-src 'self' is what blocks data leaving the site.
+const csp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "worker-src 'self' blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'none'",
+].join('; ');
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta name="referrer" content="no-referrer" />
+    <title>{title ? `${title} — I Love My P.D.F.` : t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.nav.skip}</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href={`/${lang}/`}>
+          <span class="logo-mark" aria-hidden="true">♥</span>
+          <span>I Love My <strong>P.D.F.</strong></span>
+        </a>
+        <nav aria-label={t.nav.label}>
+          <a href={`/${lang}/filter/`}>{t.nav.filter}</a>
+          <a href={`/${lang}/how-it-works/`}>{t.nav.howItWorks}</a>
+          <a href={altPath} hreflang={alt} lang={alt}>{t.nav.switchLang}</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>{t.footer.license} {t.footer.noTracking}</p>
+      </div>
+    </footer>
+  </body>
+</html>

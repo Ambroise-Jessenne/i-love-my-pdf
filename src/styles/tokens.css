@@ -1,0 +1,59 @@
+/* Design tokens — edit here to restyle the whole site. */
+:root {
+  --color-bg: #fdf6ec;
+  --color-surface: #fffaf3;
+  --color-surface-raised: #ffffff;
+  --color-text: #3a2e28;
+  --color-text-muted: #6f5f54;
+  --color-border: #ead9c6;
+  --color-accent: #b04e33;
+  --color-accent-soft: #e07a5f;
+  --color-accent-contrast: #ffffff;
+  --color-highlight: #f6d5c8;
+  --color-highlight-off: #efe7dd;
+  --color-warning-bg: #fff1d6;
+  --color-warning-text: #6b4a00;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --font-body: ui-rounded, 'SF Pro Rounded', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: clamp(2rem, 5vw, 2.75rem);
+
+  --shadow-soft: 0 6px 24px rgb(58 46 40 / 0.08);
+  --max-width: 1080px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #231b17;
+    --color-surface: #2e2520;
+    --color-surface-raised: #382d27;
+    --color-text: #f5ebe1;
+    --color-text-muted: #c9b8a8;
+    --color-border: #4a3c33;
+    --color-accent: #f0957a;
+    --color-accent-soft: #c2593c;
+    --color-accent-contrast: #231b17;
+    --color-highlight: #6e3b2c;
+    --color-highlight-off: #3a302a;
+    --color-warning-bg: #3d3016;
+    --color-warning-text: #f3d9a4;
+    --shadow-soft: 0 6px 24px rgb(0 0 0 / 0.3);
+  }
+}
