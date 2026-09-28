@@ -22,9 +22,13 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.4",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "typescript": "^6.0.3",
     "vitest": "^5.0.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
