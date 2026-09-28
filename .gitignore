@@ -5,5 +5,7 @@ dist/
 test-results/
 playwright-report/
 
-# Magritte test images (copyrighted until 2037) — replace before publishing
-src/assets/images/fils-homme*
+# Original, unaligned Magritte sources (the aligned copies used by the site are tracked).
+# Magritte's paintings are copyrighted until 2037: replace them before the public launch.
+src/assets/images/fils-homme.jpeg
+src/assets/images/fils-homme-nu.png
