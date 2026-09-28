@@ -30,11 +30,11 @@ describe('redact', () => {
     expect(redact('rien à masquer', [])).toBe('rien à masquer');
   });
 
-  it('skips a detection that overlaps an earlier one', () => {
+  it('also masks the tail of a detection that overlaps an earlier one', () => {
     const text = 'abcdefghij';
     const first: Detection = { id: '1', type: 'MASQUE', start: 0, end: 6, value: 'abcdef' };
     const second: Detection = { id: '2', type: 'MASQUE', start: 4, end: 8, value: 'efgh' };
-    expect(redact(text, [second, first])).toBe('[MASQUE_1]ghij');
+    expect(redact(text, [second, first])).toBe('[MASQUE_1]ij');
   });
 
   it('leaves none of the detected values in the output', () => {

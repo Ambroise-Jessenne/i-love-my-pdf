@@ -14,7 +14,11 @@ export function redact(text: string, detections: Detection[]): string {
   let output = '';
   let cursor = 0;
   for (const d of sorted) {
-    if (d.start < cursor) continue;
+    if (d.end <= cursor) continue;
+    if (d.start < cursor) {
+      cursor = d.end;
+      continue;
+    }
     const key = `${d.type}:${normalize(d.type, d.value)}`;
     let label = labels.get(key);
     if (!label) {
