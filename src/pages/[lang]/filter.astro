@@ -1,0 +1,28 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FilterTool from '../../components/tools/filter/FilterTool';
+import { getDict, langPaths, type Lang } from '../../i18n';
+// Test images for the scanner (Magritte, copyrighted): kept out of git, replace before publishing.
+import exposedImage from '../../assets/images/fils-homme-nu-aligned.jpg';
+import protectedImage from '../../assets/images/fils-homme-aligned.jpg';
+import sealImage from '../../assets/images/fils-homme-medaillon.jpg';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+const [exposed, protectedFace, seal] = await Promise.all([
+  getImage({ src: exposedImage, format: 'webp', quality: 80 }),
+  getImage({ src: protectedImage, format: 'webp', quality: 80 }),
+  getImage({ src: sealImage, width: 96, format: 'webp', quality: 80 }),
+]);
+---
+
+<BaseLayout lang={lang} title={t.filter.title}>
+  <h1>{t.filter.title}</h1>
+  <p class="lead">{t.filter.intro}</p>
+  <FilterTool client:load t={t.filter} scan={{ exposed: exposed.src, protected: protectedFace.src, seal: seal.src }} />
+</BaseLayout>

@@ -1,0 +1,289 @@
+.filter-tool {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.filter-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.filter-input > .btn {
+  align-self: flex-start;
+}
+
+.filter-label {
+  font-weight: 600;
+}
+
+.filter-input textarea {
+  width: 100%;
+  min-height: 14rem;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+  resize: vertical;
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.filter-input textarea:hover {
+  border-color: var(--color-accent-soft);
+}
+
+.filter-input textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-highlight);
+}
+
+.filter-error {
+  margin: 0;
+  color: var(--color-accent);
+  font-weight: 600;
+  animation: rise-in var(--duration-base) var(--ease-out) both;
+}
+
+.filter-review-layout {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+.filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.filter-panel h2 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.filter-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 2.25rem;
+}
+
+.filter-help,
+.filter-count {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.filter-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.filter-count .spinner {
+  color: var(--color-accent);
+}
+
+.filter-review,
+.filter-output {
+  max-height: 28rem;
+  margin: 0;
+  padding: var(--space-4);
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  font: inherit;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.filter-output {
+  animation: rise-in var(--duration-slow) var(--ease-out) both;
+}
+
+.pii {
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--color-highlight);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+  animation: pii-in var(--duration-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+.pii:hover {
+  box-shadow: 0 0 0 2px var(--color-accent-soft);
+}
+
+.pii::after {
+  content: attr(data-label);
+  margin-left: var(--space-1);
+  color: var(--color-accent);
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pii-off {
+  background: var(--color-highlight-off);
+  text-decoration: line-through;
+}
+
+@keyframes pii-in {
+  from {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 var(--color-accent-soft);
+  }
+  60% {
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.icon-pop {
+  animation: pop var(--duration-slow) var(--ease-spring) both;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.4) rotate(-20deg);
+    opacity: 0;
+  }
+}
+
+/* "Protected" seal shown next to the result title once the scan is over. */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--color-highlight);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  animation: seal-in var(--duration-slow) var(--ease-spring) both;
+}
+
+.seal img {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--color-surface-raised);
+}
+
+@keyframes seal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Scanner: the protected image is revealed in the wake of a glowing bar sweeping downwards. */
+.scan {
+  position: relative;
+  overflow: hidden;
+  height: min(28rem, 62vh);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  animation: fade-in var(--duration-base) var(--ease-out) both;
+}
+
+.scan-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 14%;
+}
+
+.scan-protected {
+  clip-path: inset(0 0 100% 0);
+  animation: scan-reveal var(--scan-duration) var(--ease-in-out) forwards;
+}
+
+.scan-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 3px, rgb(255 255 255 / 0.06) 3px 4px),
+    linear-gradient(to bottom, transparent 75%, color-mix(in srgb, var(--color-scan) 30%, transparent));
+  animation: scan-sweep var(--scan-duration) var(--ease-in-out) forwards;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.scan-sweep::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-scan);
+  box-shadow:
+    0 0 12px 2px var(--color-scan),
+    0 0 36px 6px color-mix(in srgb, var(--color-scan) 45%, transparent);
+}
+
+.scan.is-load .scan-protected,
+.scan.is-load .scan-sweep {
+  animation-play-state: paused;
+}
+
+.scan.is-hold .scan-sweep,
+.scan.is-leave .scan-sweep {
+  opacity: 0;
+}
+
+.scan.is-leave {
+  animation: scan-leave var(--leave-duration) var(--ease-out) forwards;
+}
+
+@keyframes scan-reveal {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes scan-sweep {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes scan-leave {
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(3px);
+  }
+}
