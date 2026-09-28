@@ -110,7 +110,9 @@ export async function renderRedactedPages(pdf: LoadedPdf, boxes: PdfBox[]): Prom
     const canvas = document.createElement('canvas');
     canvas.width = Math.floor(viewport.width);
     canvas.height = Math.floor(viewport.height);
-    await page.render({ canvas, viewport, background: '#ffffff' }).promise;
+    // The print intent renders what would be printed, in one go: it does not wait for animation frames,
+    // which browsers pause while the tab is in the background.
+    await page.render({ canvas, viewport, background: '#ffffff', intent: 'print' }).promise;
 
     const context = canvas.getContext('2d')!;
     context.fillStyle = '#000000';

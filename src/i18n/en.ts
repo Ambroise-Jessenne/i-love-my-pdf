@@ -85,13 +85,19 @@ export const en: Dict = {
   filter: {
     title: 'Filter your personal data',
     intro:
-      'Paste a text or drop a .txt file. Personal data is replaced with labels, so you can then copy the text into an AI tool with peace of mind.',
+      'Paste a text or drop a .txt, .docx or .pdf file. Personal data is replaced with labels, so you can then copy the text into an AI tool with peace of mind, or download a redacted PDF.',
     warning:
       'Automatic detection does not catch everything, especially people’s names. Always review the result before sharing it.',
     inputLabel: 'Your text',
     inputPlaceholder: 'Paste your text here…',
-    dropLabel: 'Or drop a .txt file here',
+    dropLabel: 'Or drop a .txt, .docx or .pdf file here',
     dropButton: 'Choose a file',
+    reading: 'Reading the file…',
+    fileRemove: 'Remove the file',
+    fileKinds: { txt: 'Text file', docx: 'Word document', pdf: 'PDF · {count} page(s)' },
+    fileReadOnly: 'This text comes from the file. Remove the file to type another text.',
+    largeFile:
+      'This file is large (over 100 MB): depending on your device’s memory, processing may be slow or fail.',
     analyze: 'Analyse',
     analyzing: 'Analysing…',
     reviewTitle: 'Review the detections',
@@ -108,9 +114,18 @@ export const en: Dict = {
     copy: 'Copy filtered text',
     copied: 'Copied!',
     download: 'Download filtered document',
+    downloadPdf: 'Download redacted PDF',
+    downloadText: 'Download filtered text',
+    redacting: 'Redacting…',
+    pdfNote:
+      'In the redacted PDF, every page with a black box becomes an image: its text can no longer be selected, and nothing stays hidden under the boxes.',
+    docxNote: 'Images and embedded objects in the Word document are not filtered.',
     restart: 'Start over',
     defaultFileName: 'text.txt',
-    errorFileType: 'This file type is not supported yet. Please use a .txt file.',
+    errorFileType: 'This file type is not supported. Please use a .txt, .docx or .pdf file.',
+    errorScanned: 'This PDF contains no text (scanned document): it is not supported yet.',
+    errorPassword: 'This PDF is password-protected: it cannot be opened.',
+    errorFileRead: 'This file cannot be read: it may be damaged.',
     errorGeneric: 'Something went wrong. Your original file has not been changed.',
     types: {
       EMAIL: 'Email',

@@ -1,20 +1,34 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Detection } from '../../../core/detect/types';
-import { addManual } from '../../../core/redact/redact';
 import { filteredName } from '../../../core/files/names';
+import { boxesFor, buildPdfText, type PdfSpan } from '../../../core/pdf/layout';
+import { addManual } from '../../../core/redact/redact';
 import type { Dict } from '../../../i18n/fr';
 import { getFilterApi } from '../../../workers/filterClient';
 import { DropZone } from '../../ui/DropZone';
 import { Icon } from '../../ui/Icon';
 import { Notice } from '../../ui/Notice';
-import { downloadText } from '../../ui/download';
+import { downloadBlob, downloadText } from '../../ui/download';
 import { HighlightedText } from './HighlightedText';
+import type { LoadedPdf } from './pdfBrowser';
 import { ScanReveal, type ScanImages } from './ScanReveal';
 import { getSelectionOffsets } from './selection';
 import './filter.css';
 
 const REVIEW_ID = 'filter-review';
 const NO_DETECTIONS: Detection[] = [];
+const LARGE_FILE = 100 * 1024 * 1024;
+const ACCEPT = '.txt,.docx,.pdf,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+const DOCX_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+/** Where the text under review comes from; files keep what is needed to rebuild a filtered copy. */
+type Source =
+  | { kind: 'text' }
+  | { kind: 'txt'; name: string }
+  | { kind: 'docx'; name: string; bytes: Uint8Array }
+  | { kind: 'pdf'; name: string; bytes: Uint8Array; pdf: LoadedPdf; spans: PdfSpan[] };
+
+const loadPdfTools = () => import('./pdfBrowser');
 
 interface FilterToolProps {
   t: Dict['filter'];
@@ -24,16 +38,20 @@ interface FilterToolProps {
 export default function FilterTool({ t, scan }: FilterToolProps) {
   const [step, setStep] = useState<'input' | 'review'>('input');
   const [text, setText] = useState('');
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [source, setSource] = useState<Source>({ kind: 'text' });
   const [detections, setDetections] = useState<Detection[]>([]);
   const [disabled, setDisabled] = useState<Set<string>>(new Set());
   const [output, setOutput] = useState('');
   const [busy, setBusy] = useState(false);
+  const [reading, setReading] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [scanning, setScanning] = useState(false);
+  const [largeFile, setLargeFile] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const active = useMemo(() => detections.filter((d) => !disabled.has(d.id)), [detections, disabled]);
+  const fromFile = source.kind === 'docx' || source.kind === 'pdf';
 
   // Warm the browser cache so the scanner starts at once.
   useEffect(() => {
@@ -54,15 +72,68 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     };
   }, [step, text, active, t.errorGeneric]);
 
+  function releaseSource() {
+    if (source.kind === 'pdf') void loadPdfTools().then(({ closePdf }) => closePdf(source.pdf));
+  }
+
+  async function readFile(file: File): Promise<void> {
+    const extension = file.name.toLowerCase().split('.').pop();
+    if (extension === 'txt') {
+      setText(await file.text());
+      setSource({ kind: 'txt', name: file.name });
+      return;
+    }
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    if (extension === 'docx') {
+      setText(await getFilterApi().docxText(bytes));
+      setSource({ kind: 'docx', name: file.name, bytes });
+      return;
+    }
+    const { openPdf, closePdf, PdfError } = await loadPdfTools();
+    let pdf: LoadedPdf;
+    try {
+      pdf = await openPdf(bytes);
+    } catch (reason) {
+      setError(reason instanceof PdfError && reason.reason === 'password' ? t.errorPassword : t.errorFileRead);
+      return;
+    }
+    const built = buildPdfText(pdf.pages);
+    if (built.text.trim() === '') {
+      await closePdf(pdf);
+      setError(t.errorScanned);
+      return;
+    }
+    setText(built.text);
+    setSource({ kind: 'pdf', name: file.name, bytes, pdf, spans: built.spans });
+  }
+
   async function handleFiles(files: File[]) {
     const [file] = files;
+    const extension = file.name.toLowerCase().split('.').pop() ?? '';
     setError(null);
-    if (!file.name.toLowerCase().endsWith('.txt')) {
+    if (!['txt', 'docx', 'pdf'].includes(extension)) {
       setError(t.errorFileType);
       return;
     }
-    setText(await file.text());
-    setFileName(file.name);
+    releaseSource();
+    setSource({ kind: 'text' });
+    setText('');
+    setLargeFile(file.size > LARGE_FILE);
+    setReading(true);
+    try {
+      await readFile(file);
+    } catch {
+      setError(t.errorFileRead);
+    } finally {
+      setReading(false);
+    }
+  }
+
+  function removeFile() {
+    releaseSource();
+    setSource({ kind: 'text' });
+    setText('');
+    setLargeFile(false);
   }
 
   async function analyze() {
@@ -102,16 +173,47 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     setTimeout(() => setCopied(false), 2000);
   }
 
+  async function exportFile() {
+    setExporting(true);
+    setError(null);
+    try {
+      if (source.kind === 'pdf') {
+        const { renderRedactedPages, measureText } = await loadPdfTools();
+        const boxes = boxesFor(active, source.pdf.pages, source.spans, measureText);
+        const images = await renderRedactedPages(source.pdf, boxes);
+        const bytes = await getFilterApi().assembleRedactedPdf(source.bytes, images);
+        downloadBlob(bytes, 'application/pdf', filteredName(source.name));
+      } else if (source.kind === 'docx') {
+        downloadBlob(await getFilterApi().docxRedact(source.bytes, active), DOCX_TYPE, filteredName(source.name));
+      } else {
+        downloadText(output, filteredName(source.kind === 'txt' ? source.name : t.defaultFileName));
+      }
+    } catch {
+      setError(t.errorGeneric);
+    } finally {
+      setExporting(false);
+    }
+  }
+
   function restart() {
+    releaseSource();
     setStep('input');
     setText('');
-    setFileName(null);
+    setSource({ kind: 'text' });
     setDetections([]);
     setDisabled(new Set());
     setOutput('');
     setScanning(false);
+    setLargeFile(false);
     setError(null);
   }
+
+  const fileMeta =
+    source.kind === 'pdf'
+      ? t.fileKinds.pdf.replace('{count}', String(source.pdf.pages.length))
+      : source.kind === 'docx' || source.kind === 'txt'
+        ? t.fileKinds[source.kind]
+        : '';
 
   return (
     <section className="filter-tool">
@@ -126,18 +228,46 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
           <label htmlFor="filter-text" className="filter-label">
             {t.inputLabel}
           </label>
+          {source.kind !== 'text' && (
+            <div className="file-card rise-in">
+              <Icon name="file" className="file-card-icon" />
+              <div className="file-card-text">
+                <strong>{source.name}</strong>
+                <span>{fileMeta}</span>
+              </div>
+              <button type="button" className="btn btn-ghost" onClick={removeFile}>
+                <Icon name="close" />
+                {t.fileRemove}
+              </button>
+            </div>
+          )}
           <textarea
             id="filter-text"
             value={text}
             placeholder={t.inputPlaceholder}
             rows={12}
+            readOnly={fromFile}
+            aria-describedby={fromFile ? 'filter-readonly' : undefined}
             onChange={(event) => {
               setText(event.target.value);
-              setFileName(null);
+              if (source.kind === 'txt') setSource({ kind: 'text' });
             }}
           />
-          <DropZone accept=".txt,text/plain" label={t.dropLabel} buttonLabel={t.dropButton} onFiles={handleFiles} />
-          <button type="button" className="btn" onClick={analyze} disabled={busy || text.trim() === ''}>
+          {fromFile && (
+            <p id="filter-readonly" className="filter-note">
+              {t.fileReadOnly}
+            </p>
+          )}
+          {largeFile && <Notice tone="info">{t.largeFile}</Notice>}
+          {reading ? (
+            <p className="filter-reading" role="status">
+              <span className="spinner" aria-hidden="true" />
+              {t.reading}
+            </p>
+          ) : (
+            <DropZone accept={ACCEPT} label={t.dropLabel} buttonLabel={t.dropButton} onFiles={handleFiles} />
+          )}
+          <button type="button" className="btn" onClick={analyze} disabled={busy || reading || text.trim() === ''}>
             {busy ? <span className="spinner" aria-hidden="true" /> : <Icon name="sparkle" />}
             {busy ? t.analyzing : t.analyze}
           </button>
@@ -195,19 +325,27 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
                     <Icon key={copied ? 'done' : 'idle'} name={copied ? 'check' : 'copy'} className="icon-pop" />
                     {copied ? t.copied : t.copy}
                   </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => downloadText(output, filteredName(fileName ?? t.defaultFileName))}
-                  >
-                    <Icon name="download" />
-                    {t.download}
+                  <button type="button" className="btn btn-secondary" onClick={exportFile} disabled={exporting}>
+                    {exporting ? <span className="spinner" aria-hidden="true" /> : <Icon name="download" />}
+                    {exporting && source.kind === 'pdf' ? t.redacting : source.kind === 'pdf' ? t.downloadPdf : t.download}
                   </button>
+                  {source.kind === 'pdf' && (
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => downloadText(output, filteredName(source.name, '.txt'))}
+                    >
+                      <Icon name="download" />
+                      {t.downloadText}
+                    </button>
+                  )}
                   <button type="button" className="btn btn-ghost" onClick={restart}>
                     <Icon name="restart" />
                     {t.restart}
                   </button>
                 </div>
+                {source.kind === 'pdf' && <p className="filter-note">{t.pdfNote}</p>}
+                {source.kind === 'docx' && <p className="filter-note">{t.docxNote}</p>}
               </>
             )}
           </div>

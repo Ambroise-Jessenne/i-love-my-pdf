@@ -11,4 +11,12 @@ describe('filteredName', () => {
   ])('%j → %j', (input, expected) => {
     expect(filteredName(input)).toBe(expected);
   });
+
+  it.each([
+    ['rapport.pdf', '.txt', 'rapport_prv.txt'],
+    ['lettre.docx', '.docx', 'lettre_prv.docx'],
+    ['', '.pdf', 'texte_prv.pdf'],
+  ])('%j with extension %j → %j', (input, extension, expected) => {
+    expect(filteredName(input, extension)).toBe(expected);
+  });
 });

@@ -8,6 +8,8 @@ const PATHS = {
   shield: 'M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Zm0 6v4m0 3.5v.01',
   sparkle: 'M12 3v4m0 10v4M3 12h4m10 0h4M6 6l2.5 2.5m7 7L18 18M6 18l2.5-2.5m7-7L18 6',
   eraser: 'M16 3.5 20.5 8 11 17.5H6.5L3.5 14.5ZM9 20h11',
+  file: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Zm0 0v5h5M9 13h6M9 17h4',
+  close: 'M6 6l12 12M18 6 6 18',
 } as const;
 
 export type IconName = keyof typeof PATHS;

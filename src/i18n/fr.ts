@@ -83,13 +83,19 @@ export const fr = {
   filter: {
     title: 'Filtrer vos données personnelles',
     intro:
-      'Collez un texte ou déposez un fichier .txt. Les données personnelles sont remplacées par des étiquettes : vous pouvez ensuite copier le texte vers un outil d’IA en toute tranquillité.',
+      'Collez un texte ou déposez un fichier .txt, .docx ou .pdf. Les données personnelles sont remplacées par des étiquettes : vous pouvez ensuite copier le texte vers un outil d’IA en toute tranquillité, ou télécharger un PDF caviardé.',
     warning:
       'La détection automatique ne trouve pas tout, en particulier les noms de personnes. Relisez toujours le résultat avant de le partager.',
     inputLabel: 'Votre texte',
     inputPlaceholder: 'Collez votre texte ici…',
-    dropLabel: 'Ou déposez un fichier .txt ici',
+    dropLabel: 'Ou déposez un fichier .txt, .docx ou .pdf ici',
     dropButton: 'Choisir un fichier',
+    reading: 'Lecture du fichier…',
+    fileRemove: 'Retirer le fichier',
+    fileKinds: { txt: 'Fichier texte', docx: 'Document Word', pdf: 'PDF · {count} page(s)' },
+    fileReadOnly: 'Ce texte vient du fichier. Retirez le fichier pour saisir un autre texte.',
+    largeFile:
+      'Ce fichier est volumineux (plus de 100 Mo) : selon la mémoire de votre appareil, le traitement peut être lent ou échouer.',
     analyze: 'Analyser',
     analyzing: 'Analyse en cours…',
     reviewTitle: 'Vérifiez les détections',
@@ -106,9 +112,18 @@ export const fr = {
     copy: 'Copier le texte filtré',
     copied: 'Copié !',
     download: 'Télécharger le document filtré',
+    downloadPdf: 'Télécharger le PDF caviardé',
+    downloadText: 'Télécharger le texte filtré',
+    redacting: 'Caviardage en cours…',
+    pdfNote:
+      'Dans le PDF caviardé, chaque page qui porte un encart noir devient une image : son texte n’est plus sélectionnable, et rien ne reste caché sous les encarts.',
+    docxNote: 'Les images et les objets incorporés au document Word ne sont pas filtrés.',
     restart: 'Recommencer',
     defaultFileName: 'texte.txt',
-    errorFileType: 'Ce type de fichier n’est pas encore pris en charge. Utilisez un fichier .txt.',
+    errorFileType: 'Ce type de fichier n’est pas pris en charge. Utilisez un fichier .txt, .docx ou .pdf.',
+    errorScanned: 'Ce PDF ne contient pas de texte (document scanné) : il n’est pas encore pris en charge.',
+    errorPassword: 'Ce PDF est protégé par un mot de passe : il ne peut pas être ouvert.',
+    errorFileRead: 'Impossible de lire ce fichier : il est peut-être endommagé.',
     errorGeneric: 'Une erreur est survenue. Votre fichier d’origine n’a pas été modifié.',
     types: {
       EMAIL: 'Email',
