@@ -35,7 +35,7 @@ async function readPdf(bytes: Uint8Array) {
     const { width, height } = page.getViewport({ scale: 1 });
     pages.push({ text: content.items.map((i) => ('str' in i ? i.str : '')).join(''), width, height });
   }
-  const { info } = (await doc.getMetadata()) as { info: Record<string, unknown> };
+  const info = (await doc.getMetadata()).info as Record<string, unknown>;
   await task.destroy();
   return { pages, info };
 }
