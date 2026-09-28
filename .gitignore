@@ -4,3 +4,6 @@ dist/
 .astro/
 test-results/
 playwright-report/
+
+# Magritte test images (copyrighted until 2037) — replace before publishing
+src/assets/images/fils-homme*

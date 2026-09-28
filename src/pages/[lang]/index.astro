@@ -85,6 +85,9 @@ const tools = [
     border-radius: var(--radius-lg);
     background: var(--color-surface);
     box-shadow: var(--shadow-soft);
+    transition:
+      transform var(--duration-base) var(--ease-spring),
+      box-shadow var(--duration-base) var(--ease-out);
   }
 
   .tool-card a {
@@ -100,7 +103,12 @@ const tools = [
   }
 
   .tool-card:not(.is-soon):hover {
-    outline: 2px solid var(--color-accent-soft);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .tool-card:not(.is-soon):hover a {
+    color: var(--color-accent);
   }
 
   .tool-card p {

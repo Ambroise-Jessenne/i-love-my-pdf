@@ -1,0 +1,25 @@
+---
+// Decorative animated background, fixed behind every page.
+---
+
+<canvas class="ribbons" aria-hidden="true"></canvas>
+
+<script>
+  import { startRibbons } from './ribbons';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('canvas.ribbons');
+  if (canvas) startRibbons(canvas);
+</script>
+
+<style>
+  .ribbons {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    view-transition-name: ribbons;
+  }
+</style>

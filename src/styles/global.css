@@ -8,6 +8,17 @@ html {
   color-scheme: light dark;
 }
 
+/* Smooth cross-fade between pages (native, no JavaScript; ignored by browsers that lack it). */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-base);
+  animation-timing-function: var(--ease-out);
+}
+
 body {
   margin: 0;
   background: var(--color-bg);
@@ -46,7 +57,7 @@ a {
 
 :focus-visible {
   outline: 3px solid var(--color-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .container {
@@ -60,7 +71,21 @@ a {
   max-width: 60ch;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Buttons */
+
 .btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -68,35 +93,100 @@ a {
   padding: var(--space-3) var(--space-5);
   border: 2px solid var(--color-accent);
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
+  background: linear-gradient(180deg, var(--color-accent-soft) -60%, var(--color-accent) 70%);
+  box-shadow: var(--shadow-accent);
   color: var(--color-accent-contrast);
   font: inherit;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 120ms ease;
+  transition:
+    transform var(--duration-base) var(--ease-spring),
+    box-shadow var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
 }
 
-.btn:hover {
-  transform: translateY(-1px);
+/* Soft light sweep across the button on hover. */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  transform: translateX(-110%);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-accent-lift);
+}
+
+.btn:hover:not(:disabled)::before {
+  transform: translateX(110%);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  box-shadow: var(--shadow-accent);
+  transition-duration: 80ms;
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
+  box-shadow: none;
+}
+
+.btn svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
 }
 
 .btn-secondary {
-  background: transparent;
+  background: var(--color-surface-raised);
+  box-shadow: none;
   color: var(--color-accent);
+}
+
+.btn-secondary::before {
+  background: linear-gradient(110deg, transparent 30%, var(--color-highlight) 50%, transparent 70%);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-highlight-off);
+  box-shadow: var(--shadow-soft);
 }
 
 .btn-ghost {
   background: transparent;
   border-color: transparent;
+  box-shadow: none;
   color: var(--color-text-muted);
 }
+
+.btn-ghost::before {
+  display: none;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-highlight-off);
+  box-shadow: none;
+  color: var(--color-text);
+}
+
+.spinner {
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+/* Header, navigation, footer */
 
 .skip-link {
   position: absolute;
@@ -114,6 +204,7 @@ a {
 
 .site-header {
   padding: var(--space-4) 0;
+  view-transition-name: site-header;
 }
 
 .header-inner {
@@ -145,6 +236,11 @@ a {
   border-radius: 50%;
   background: var(--color-accent-soft);
   color: #fff8f2;
+  transition: transform var(--duration-base) var(--ease-spring);
+}
+
+.logo:hover .logo-mark {
+  transform: scale(1.12) rotate(-8deg);
 }
 
 .site-header nav {
@@ -154,13 +250,35 @@ a {
 }
 
 .site-header nav a {
+  position: relative;
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+/* Underline that grows from the left on hover. */
+.site-header nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-out);
 }
 
 .site-header nav a:hover {
   color: var(--color-accent);
+}
+
+.site-header nav a:hover::after,
+.site-header nav a[aria-current='page']::after {
+  transform: scaleX(1);
 }
 
 main {
@@ -174,12 +292,46 @@ main {
   font-size: var(--font-size-sm);
 }
 
+/* Shared animations */
+
+.rise-in {
+  animation: rise-in var(--duration-slow) var(--ease-out) both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .btn {
-    transition: none;
+  @view-transition {
+    navigation: none;
   }
 
-  .btn:hover {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+
+  .btn:hover:not(:disabled),
+  .btn:active:not(:disabled) {
     transform: none;
   }
 }

@@ -36,7 +36,22 @@
   --font-size-2xl: clamp(2rem, 5vw, 2.75rem);
 
   --shadow-soft: 0 6px 24px rgb(58 46 40 / 0.08);
+  --shadow-lift: 0 14px 36px rgb(58 46 40 / 0.14);
+  --shadow-accent: 0 6px 18px rgb(176 78 51 / 0.28);
+  --shadow-accent-lift: 0 12px 28px rgb(176 78 51 / 0.36);
   --max-width: 1080px;
+
+  /* Motion — every transition and animation draws from these. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 160ms;
+  --duration-base: 260ms;
+  --duration-slow: 480ms;
+
+  /* Animated background and scanner. */
+  --ribbon-line: rgb(176 78 51 / 0.13);
+  --color-scan: #e07a5f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,5 +70,10 @@
     --color-warning-bg: #3d3016;
     --color-warning-text: #f3d9a4;
     --shadow-soft: 0 6px 24px rgb(0 0 0 / 0.3);
+    --shadow-lift: 0 14px 36px rgb(0 0 0 / 0.4);
+    --shadow-accent: 0 6px 18px rgb(0 0 0 / 0.35);
+    --shadow-accent-lift: 0 12px 28px rgb(0 0 0 / 0.45);
+    --ribbon-line: rgb(240 149 122 / 0.1);
+    --color-scan: #f0957a;
   }
 }
