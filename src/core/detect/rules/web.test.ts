@@ -22,6 +22,12 @@ describe('emailRule', () => {
   it('ignores a lone at sign', () => {
     expect(values('rendez-vous @ midi', emailRule)).toEqual([]);
   });
+
+  it('stays fast on a long token without an at sign', () => {
+    const started = performance.now();
+    values('a'.repeat(200_000), emailRule);
+    expect(performance.now() - started).toBeLessThan(1000);
+  });
 });
 
 describe('urlRule', () => {
@@ -31,6 +37,10 @@ describe('urlRule', () => {
 
   it('finds www links', () => {
     expect(values('Site : www.site.com, bientôt', urlRule)).toEqual(['www.site.com']);
+  });
+
+  it('finds capitalised links', () => {
+    expect(values('Https://exemple.fr et WWW.site.com', urlRule)).toEqual(['Https://exemple.fr', 'WWW.site.com']);
   });
 });
 
