@@ -15,6 +15,6 @@ export function isValidIban(raw: string): boolean {
 export const ibanRule: Rule = {
   type: 'IBAN',
   priority: 80,
-  pattern: /\b[A-Z]{2}\d{2}(?: ?[A-Z0-9]{4}){2,7}(?: ?[A-Z0-9]{1,4})?\b/g,
+  pattern: /\b[A-Z]{2}\d{2}(?: ?[A-Z0-9]{4}){2,7}(?: ?[A-Z0-9]{1,4})?\b/gi,
   validate: isValidIban,
 };

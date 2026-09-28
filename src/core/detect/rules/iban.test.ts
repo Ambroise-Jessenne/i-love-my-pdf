@@ -35,4 +35,8 @@ describe('ibanRule', () => {
   it('ignores an IBAN with a wrong check digit', () => {
     expect(values('FR76 3000 6000 0112 3456 7890 188')).toEqual([]);
   });
+
+  it('finds a lowercase IBAN', () => {
+    expect(values('iban : fr76 3000 6000 0112 3456 7890 189')).toEqual(['fr76 3000 6000 0112 3456 7890 189']);
+  });
 });
