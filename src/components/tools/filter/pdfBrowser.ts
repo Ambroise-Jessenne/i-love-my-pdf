@@ -1,24 +1,17 @@
 // Browser glue around pdf.js: read a PDF's text with its positions, and render redacted pages as images.
 // Loaded on demand, only when a PDF is dropped.
-import { getDocument, GlobalWorkerOptions, type PageViewport, type PDFDocumentProxy } from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+import type { PageViewport, PDFDocumentProxy } from 'pdfjs-dist';
 import type { TextItem } from 'pdfjs-dist/types/src/display/api';
 import type { RedactedPageImage } from '../../../core/pdf/assemble';
 import type { PdfBox, PdfPageText, PdfTextItem } from '../../../core/pdf/layout';
+import { closeDocument, loadPdfDocument, PdfError } from '../../pdf/pdfjs';
 
-GlobalWorkerOptions.workerSrc = workerUrl;
+export { PdfError };
 
-const ASSETS = '/pdfjs/';
 const RENDER_SCALE = 2; // 144 dpi
 const MAX_RENDER_SIDE = 4000; // px, to keep memory in check on very large pages
 const ASCENT = 0.9; // share of the font size above the baseline
 const DESCENT = 0.25; // share below it
-
-export class PdfError extends Error {
-  constructor(readonly reason: 'password' | 'invalid') {
-    super(reason);
-  }
-}
 
 export interface LoadedPdf {
   doc: PDFDocumentProxy;
@@ -26,21 +19,7 @@ export interface LoadedPdf {
 }
 
 export async function openPdf(bytes: Uint8Array): Promise<LoadedPdf> {
-  let doc: PDFDocumentProxy;
-  try {
-    doc = await getDocument({
-      data: bytes.slice(), // pdf.js takes ownership of the buffer it receives
-      cMapUrl: `${ASSETS}cmaps/`,
-      standardFontDataUrl: `${ASSETS}standard_fonts/`,
-      wasmUrl: `${ASSETS}wasm/`,
-      iccUrl: `${ASSETS}iccs/`,
-      useWasm: false, // the site's CSP does not allow compiling WebAssembly
-      enableXfa: false,
-    }).promise;
-  } catch (error) {
-    throw new PdfError((error as Error | undefined)?.name === 'PasswordException' ? 'password' : 'invalid');
-  }
-
+  const doc = await loadPdfDocument(bytes);
   const pages: PdfPageText[] = [];
   for (let n = 1; n <= doc.numPages; n++) {
     const page = await doc.getPage(n);
@@ -54,7 +33,7 @@ export async function openPdf(bytes: Uint8Array): Promise<LoadedPdf> {
 }
 
 export async function closePdf(pdf: LoadedPdf): Promise<void> {
-  await pdf.doc.loadingTask.destroy();
+  await closeDocument(pdf.doc);
 }
 
 function toItem(raw: TextItem, viewport: PageViewport): PdfTextItem {
