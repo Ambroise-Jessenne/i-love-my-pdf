@@ -9,7 +9,7 @@ import { zipFiles } from '../core/zip';
 
 let fonts: Promise<FontFiles> | undefined;
 
-/** Liberation Sans, served by the site alongside pdf.js (SIL Open Font License). */
+/** Liberation Sans, served by the site alongside pdf.js (GPL v2 with an exception allowing it to be embedded in documents). */
 function loadFonts(): Promise<FontFiles> {
   fonts ??= Promise.all(
     ['Regular', 'Bold', 'Italic', 'BoldItalic'].map(async (style) => {

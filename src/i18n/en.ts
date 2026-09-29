@@ -11,11 +11,13 @@ export const en: Dict = {
     skip: 'Skip to content',
     filter: 'Filter',
     howItWorks: 'How it works',
+    about: 'About',
     switchLang: 'Français',
   },
   footer: {
     license: 'Free software under the MIT license.',
     noTracking: 'No cookies, no trackers, no ads.',
+    about: 'About and credits',
   },
   home: {
     title: 'Your documents never leave your browser.',
@@ -43,7 +45,7 @@ export const en: Dict = {
       },
       {
         title: 'Open to everyone',
-        text: 'The source code is public under the MIT license: anyone can check what the site does.',
+        text: 'The source code, under the MIT license, will be public: anyone will be able to check what the site does.',
       },
       {
         title: 'Zero trackers',
@@ -220,5 +222,60 @@ export const en: Dict = {
       limits:
         'Headings, paragraphs, bold, italic, lists, images and simple tables are kept. Headers, footers, columns, text boxes and advanced formatting are approximated or ignored.',
     },
+  },
+  about: {
+    title: 'About',
+    intro:
+      'I Love My P.D.F. is a free and open-source site to prepare your documents before sharing them: filter personal data, merge, split and convert PDFs, without ever sending them over the Internet.',
+    sections: [
+      {
+        title: 'Why this site',
+        text: 'We hand more and more text over to AI tools and online services. Yet our documents often hold names, addresses or numbers that have no business being there. I Love My P.D.F. lets you remove them before sharing, and do everyday PDF tasks without going through a server.',
+      },
+      {
+        title: 'Our commitments',
+        text: 'Your files are processed by your browser, on your device: no server receives them. No account, no ads, no cookies, no analytics, and nothing is kept once the page is closed.',
+      },
+      {
+        title: 'Who is behind it',
+        text: 'I Love My P.D.F. is an independent project created by Ambroise Jessenne.',
+      },
+      {
+        title: 'Free software',
+        text: 'The source code is released under the MIT license: anyone can read it, check it, reuse it and suggest improvements.',
+      },
+    ],
+    howLink: 'How to check it yourself',
+    sourceLink: 'See the source code on GitHub',
+    creditsTitle: 'Credits',
+    creditsIntro: 'This site is built on free software and public data. Thanks to their authors.',
+    credits: [
+      {
+        title: 'Libraries',
+        items: [
+          'Astro and React (MIT): the site and its tools',
+          'pdf.js, by Mozilla (Apache 2.0): reading and displaying PDFs',
+          'pdf-lib and @pdf-lib/fontkit (MIT): writing PDFs',
+          'docx (MIT) and mammoth (BSD 2-Clause): writing and reading Word documents',
+          'fflate (MIT): ZIP archives and Word files',
+          'Comlink (Apache 2.0): talking to background workers',
+        ],
+      },
+      {
+        title: 'Data',
+        items: [
+          'First names and surnames: INSEE, under the Licence Ouverte / Open Licence 2.0 (Etalab)',
+          'French towns, départements and régions: geo.api.gouv.fr, under the Licence Ouverte / Open Licence 2.0 (Etalab)',
+          'French and English word lists: Loren Brichter, “Words”, CC0 1.0',
+        ],
+      },
+      {
+        title: 'Font and illustration',
+        items: [
+          'Liberation Sans, by Red Hat (GPL v2 with an exception for embedding in documents), shipped with pdf.js',
+          'Animation of the Filter tool after René Magritte, The Son of Man (1964)',
+        ],
+      },
+    ],
   },
 };

@@ -34,7 +34,7 @@ Réunit les plans 2 et 3 du cahier des charges (§ 3.2 à 3.5).
 ## 5. Word → PDF
 
 - Lecture du `.docx` avec `mammoth` (BSD-2) → HTML simple, découpé en blocs par un petit analyseur sans DOM (titres, paragraphes, gras, italique, listes à puces et numérotées, images, tableaux simples, sauts de ligne).
-- Mise en page maison avec pdf-lib + `@pdf-lib/fontkit` (MIT) : A4, marges 2 cm, police Liberation Sans (4 styles, SIL OFL, déjà servie avec pdf.js), césure aux espaces, titres, puces et numéros, images mises à l'échelle, tableaux en colonnes égales avec bordures, pages ajoutées au besoin. Texte réel, sélectionnable → `nom.pdf`.
+- Mise en page maison avec pdf-lib + `@pdf-lib/fontkit` (MIT) : A4, marges 2 cm, police Liberation Sans (4 styles, GPL v2 avec exception d’incorporation dans les documents, déjà servie avec pdf.js), césure aux espaces, titres, puces et numéros, images mises à l'échelle, tableaux en colonnes égales avec bordures, pages ajoutées au besoin. Texte réel, sélectionnable → `nom.pdf`.
 - Limites affichées : en-têtes, pieds de page, colonnes, zones de texte et mises en forme avancées approximés ou ignorés.
 
 ## 6. Tests

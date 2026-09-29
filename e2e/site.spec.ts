@@ -33,3 +33,17 @@ test('draws the decorative animated background behind every page', async ({ page
     expect(await canvas.evaluate((node: HTMLCanvasElement) => node.width)).toBeGreaterThan(0);
   }
 });
+
+test('about page is linked from the menu, credits its data sources and points to the source code', async ({ page }) => {
+  await page.goto('/fr/');
+  await page.getByRole('navigation', { name: 'Navigation principale' }).getByRole('link', { name: 'À propos' }).click();
+  await expect(page).toHaveURL(/\/fr\/about\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('À propos');
+  await expect(page.getByText('Prénoms et noms de famille : INSEE, sous Licence Ouverte')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Voir le code source sur GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/Ambroise-Jessenne/i-love-my-pdf',
+  );
+  await page.goto('/en/about/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('About');
+});

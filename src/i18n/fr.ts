@@ -9,11 +9,13 @@ export const fr = {
     skip: 'Aller au contenu',
     filter: 'Filtrer',
     howItWorks: 'Comment ça marche',
+    about: 'À propos',
     switchLang: 'English',
   },
   footer: {
     license: 'Logiciel libre sous licence MIT.',
     noTracking: 'Aucun cookie, aucun traceur, aucune publicité.',
+    about: 'À propos et crédits',
   },
   home: {
     title: 'Vos documents ne quittent jamais votre navigateur.',
@@ -41,7 +43,7 @@ export const fr = {
       },
       {
         title: 'Un code ouvert à tous',
-        text: 'Le code source est public, sous licence MIT : chacun peut vérifier ce que fait le site.',
+        text: 'Le code source, sous licence MIT, sera public : chacun pourra vérifier ce que fait le site.',
       },
       {
         title: 'Zéro traceur',
@@ -218,6 +220,61 @@ export const fr = {
       limits:
         'Titres, paragraphes, gras, italique, listes, images et tableaux simples sont repris. Les en-têtes, pieds de page, colonnes, zones de texte et mises en forme avancées sont approximés ou ignorés.',
     },
+  },
+  about: {
+    title: 'À propos',
+    intro:
+      'I Love My P.D.F. est un site gratuit et libre pour préparer vos documents avant de les partager : filtrer les données personnelles, fusionner, diviser et convertir des PDF, sans jamais les envoyer sur Internet.',
+    sections: [
+      {
+        title: 'Pourquoi ce site',
+        text: 'Nous confions de plus en plus de textes à des outils d’IA et à des services en ligne. Or nos documents contiennent souvent des noms, des adresses ou des numéros qui n’ont rien à y faire. I Love My P.D.F. permet de les retirer avant de partager, et de faire les opérations courantes sur les PDF sans passer par un serveur.',
+      },
+      {
+        title: 'Nos engagements',
+        text: 'Vos fichiers sont traités par votre navigateur, sur votre appareil : aucun serveur ne les reçoit. Pas de compte, pas de publicité, pas de cookie, pas de statistiques d’audience, et rien n’est conservé une fois la page fermée.',
+      },
+      {
+        title: 'Qui est derrière',
+        text: 'I Love My P.D.F. est un projet indépendant créé par Ambroise Jessenne.',
+      },
+      {
+        title: 'Un logiciel libre',
+        text: 'Le code source est placé sous licence MIT : chacun peut le lire, le vérifier, le réutiliser et proposer des améliorations.',
+      },
+    ],
+    howLink: 'Comment le vérifier vous-même',
+    sourceLink: 'Voir le code source sur GitHub',
+    creditsTitle: 'Crédits',
+    creditsIntro: 'Ce site repose sur des logiciels libres et des données publiques. Merci à leurs auteurs.',
+    credits: [
+      {
+        title: 'Bibliothèques',
+        items: [
+          'Astro et React (MIT) : le site et ses outils',
+          'pdf.js, de Mozilla (Apache 2.0) : lecture et affichage des PDF',
+          'pdf-lib et @pdf-lib/fontkit (MIT) : écriture des PDF',
+          'docx (MIT) et mammoth (BSD 2-Clause) : écriture et lecture des documents Word',
+          'fflate (MIT) : archives ZIP et fichiers Word',
+          'Comlink (Apache 2.0) : échanges avec les tâches de fond',
+        ],
+      },
+      {
+        title: 'Données',
+        items: [
+          'Prénoms et noms de famille : INSEE, sous Licence Ouverte / Open Licence 2.0 (Etalab)',
+          'Communes, départements et régions : geo.api.gouv.fr, sous Licence Ouverte / Open Licence 2.0 (Etalab)',
+          'Listes de mots français et anglais : Loren Brichter, « Words », CC0 1.0',
+        ],
+      },
+      {
+        title: 'Police et illustration',
+        items: [
+          'Liberation Sans, de Red Hat (GPL v2 avec exception pour l’incorporation dans les documents), fournie avec pdf.js',
+          'Animation de l’outil « Filtrer » d’après René Magritte, Le Fils de l’homme (1964)',
+        ],
+      },
+    ],
   },
 };
 

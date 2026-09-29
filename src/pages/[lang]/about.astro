@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDict, langPaths, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const REPOSITORY = 'https://github.com/Ambroise-Jessenne/i-love-my-pdf';
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+---
+
+<BaseLayout lang={lang} title={t.about.title}>
+  <h1>{t.about.title}</h1>
+  <p class="lead">{t.about.intro}</p>
+
+  <div class="sections">
+    {
+      t.about.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <p>{section.text}</p>
+        </section>
+      ))
+    }
+  </div>
+
+  <div class="links">
+    <a class="btn btn-secondary" href={`/${lang}/how-it-works/`}>{t.about.howLink}</a>
+    <a class="btn btn-secondary" href={REPOSITORY} rel="noopener noreferrer">{t.about.sourceLink}</a>
+  </div>
+
+  <section class="credits" aria-labelledby="credits-title">
+    <h2 id="credits-title">{t.about.creditsTitle}</h2>
+    <p class="credits-intro">{t.about.creditsIntro}</p>
+    <div class="credit-groups">
+      {
+        t.about.credits.map((group) => (
+          <div class="credit-group">
+            <h3>{group.title}</h3>
+            <ul>
+              {group.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sections {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    margin: var(--space-6) 0 var(--space-5);
+  }
+
+  .sections section {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform var(--duration-base) var(--ease-spring),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .sections section:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .sections h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  .sections p {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+
+  .credits {
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .credits-intro {
+    color: var(--color-text-muted);
+  }
+
+  .credit-groups {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    margin-top: var(--space-5);
+  }
+
+  .credit-group h3 {
+    color: var(--color-accent);
+    font-size: var(--font-size-md);
+  }
+
+  .credit-group ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-5);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+</style>
