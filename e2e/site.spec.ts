@@ -27,7 +27,7 @@ test('draws the decorative animated background behind every page', async ({ page
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   for (const path of ['/fr/', '/fr/filter/', '/en/how-it-works/']) {
     await page.goto(path);
-    const canvas = page.locator('canvas.ribbons');
+    const canvas = page.locator('canvas.flow-field');
     await expect(canvas).toHaveAttribute('aria-hidden', 'true');
     await expect(canvas).toHaveCSS('pointer-events', 'none');
     expect(await canvas.evaluate((node: HTMLCanvasElement) => node.width)).toBeGreaterThan(0);

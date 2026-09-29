@@ -50,7 +50,9 @@
   --duration-slow: 480ms;
 
   /* Animated background and scanner. */
-  --ribbon-line: rgb(176 78 51 / 0.13);
+  --flow-line: 176, 78, 51;
+  --flow-line-active: 176, 78, 51;
+  --flow-strength: 0.55;
   --color-scan: #e07a5f;
 }
 
@@ -73,7 +75,9 @@
     --shadow-lift: 0 14px 36px rgb(0 0 0 / 0.4);
     --shadow-accent: 0 6px 18px rgb(0 0 0 / 0.35);
     --shadow-accent-lift: 0 12px 28px rgb(0 0 0 / 0.45);
-    --ribbon-line: rgb(240 149 122 / 0.1);
+    --flow-line: 240, 149, 122;
+    --flow-line-active: 246, 190, 160;
+    --flow-strength: 0.66;
     --color-scan: #f0957a;
   }
 }

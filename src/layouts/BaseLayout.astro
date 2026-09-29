@@ -1,7 +1,7 @@
 ---
 import '../styles/tokens.css';
 import '../styles/global.css';
-import FlowingRibbons from '../components/ui/FlowingRibbons.astro';
+import FlowField from '../components/ui/FlowField.astro';
 import { getDict, otherLang, type Lang } from '../i18n';
 
 interface Props {
@@ -41,7 +41,7 @@ const csp = [
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <FlowingRibbons />
+    <FlowField />
     <a class="skip-link" href="#main">{t.nav.skip}</a>
     <header class="site-header">
       <div class="container header-inner">
