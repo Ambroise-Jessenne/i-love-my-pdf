@@ -160,6 +160,7 @@ function drawTable(writer: Writer, rows: Inline[][][]): void {
   const columns = Math.max(...rows.map((row) => row.length));
   const columnWidth = CONTENT_WIDTH / columns;
   const lineHeight = TABLE_SIZE * LINE_HEIGHT;
+  writer.y -= 6;
   for (const row of rows) {
     const cells = row.map((cell) =>
       breakLines(

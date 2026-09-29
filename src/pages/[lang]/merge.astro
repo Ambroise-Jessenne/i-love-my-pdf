@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MergeTool from '../../components/tools/merge/MergeTool';
+import OtherTools from '../../components/tools/common/OtherTools.astro';
+import { getDict, langPaths, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+---
+
+<BaseLayout lang={lang} title={t.tools.merge.title}>
+  <h1>{t.tools.merge.title}</h1>
+  <p class="lead">{t.tools.merge.intro}</p>
+  <MergeTool client:load t={t.tools} />
+  <OtherTools lang={lang} current="merge" />
+</BaseLayout>

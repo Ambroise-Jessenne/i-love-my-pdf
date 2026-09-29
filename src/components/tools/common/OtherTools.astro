@@ -1,0 +1,74 @@
+---
+import { getDict, type Lang } from '../../../i18n';
+
+export const TOOLS = [
+  { key: 'filter', path: 'filter' },
+  { key: 'merge', path: 'merge' },
+  { key: 'split', path: 'split' },
+  { key: 'pdfToWord', path: 'pdf-to-word' },
+  { key: 'wordToPdf', path: 'word-to-pdf' },
+] as const;
+
+interface Props {
+  lang: Lang;
+  current: (typeof TOOLS)[number]['key'];
+}
+
+const { lang, current } = Astro.props;
+const t = getDict(lang);
+---
+
+<nav class="other-tools" aria-labelledby="other-tools-title">
+  <h2 id="other-tools-title">{t.tools.otherTools}</h2>
+  <ul>
+    {
+      TOOLS.filter((tool) => tool.key !== current).map((tool) => (
+        <li>
+          <a href={`/${lang}/${tool.path}/`}>{t.home.tools[tool.key].name}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .other-tools {
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .other-tools h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+    color: var(--color-text);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      transform var(--duration-base) var(--ease-spring),
+      color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+    color: var(--color-accent);
+  }
+</style>

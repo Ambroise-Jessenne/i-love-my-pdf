@@ -10,6 +10,12 @@ const PATHS = {
   eraser: 'M16 3.5 20.5 8 11 17.5H6.5L3.5 14.5ZM9 20h11',
   file: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Zm0 0v5h5M9 13h6M9 17h4',
   close: 'M6 6l12 12M18 6 6 18',
+  arrowUp: 'M12 19V5m0 0-6 6m6-6 6 6',
+  arrowDown: 'M12 5v14m0 0-6-6m6 6 6-6',
+  layers: 'M12 3 3 8l9 5 9-5-9-5ZM3 12l9 5 9-5M3 16l9 5 9-5',
+  scissors: 'M6 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM8.1 8.1 20 20M8.1 15.9 20 4',
+  convert: 'M4 7h13l-3-3m6 13H7l3 3',
+  grip: 'M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01',
 } as const;
 
 export type IconName = keyof typeof PATHS;

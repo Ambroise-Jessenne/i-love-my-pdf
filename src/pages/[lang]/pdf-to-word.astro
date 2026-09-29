@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ConvertTool from '../../components/tools/convert/ConvertTool';
+import OtherTools from '../../components/tools/common/OtherTools.astro';
+import { getDict, langPaths, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+---
+
+<BaseLayout lang={lang} title={t.tools.pdfToWord.title}>
+  <h1>{t.tools.pdfToWord.title}</h1>
+  <p class="lead">{t.tools.pdfToWord.intro}</p>
+  <ConvertTool client:load t={t.tools} direction="pdfToWord" />
+  <OtherTools lang={lang} current="pdfToWord" />
+</BaseLayout>

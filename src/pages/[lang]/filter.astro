@@ -2,6 +2,7 @@
 import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FilterTool from '../../components/tools/filter/FilterTool';
+import OtherTools from '../../components/tools/common/OtherTools.astro';
 import { getDict, langPaths, type Lang } from '../../i18n';
 // Test images for the scanner (Magritte, copyrighted): kept out of git, replace before publishing.
 import exposedImage from '../../assets/images/fils-homme-nu-aligned.jpg';
@@ -25,4 +26,5 @@ const [exposed, protectedFace, seal] = await Promise.all([
   <h1>{t.filter.title}</h1>
   <p class="lead">{t.filter.intro}</p>
   <FilterTool client:load t={t.filter} scan={{ exposed: exposed.src, protected: protectedFace.src, seal: seal.src }} />
+  <OtherTools lang={lang} current="filter" />
 </BaseLayout>

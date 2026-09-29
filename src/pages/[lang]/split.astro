@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SplitTool from '../../components/tools/split/SplitTool';
+import OtherTools from '../../components/tools/common/OtherTools.astro';
+import { getDict, langPaths, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return langPaths();
+}
+
+const lang = Astro.params.lang as Lang;
+const t = getDict(lang);
+---
+
+<BaseLayout lang={lang} title={t.tools.split.title}>
+  <h1>{t.tools.split.title}</h1>
+  <p class="lead">{t.tools.split.intro}</p>
+  <SplitTool client:load t={t.tools} />
+  <OtherTools lang={lang} current="split" />
+</BaseLayout>
