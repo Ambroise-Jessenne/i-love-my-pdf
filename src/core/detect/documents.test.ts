@@ -142,6 +142,14 @@ describe('strict mode on fictitious documents', () => {
   });
 });
 
+describe('usual acronyms that are also first names', () => {
+  it('never takes IBAN, BIC or TVA at the start of a line for a person', () => {
+    const text = ['IBAN : FR76 3000 6000 0112 3456 7890 189', 'BIC : AGRIFRPP', 'TVA : 20 %'].join(String.fromCharCode(10));
+    const types = detect(text, { lexicon, strict: true }).map((d) => d.type);
+    expect(types).not.toContain('PERSONNE');
+  });
+});
+
 describe('strict mode on pathological inputs', () => {
   const inputs: Array<[string, string]> = [
     ['capitalised words', 'Jean Dupont '.repeat(16_000)],

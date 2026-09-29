@@ -39,29 +39,29 @@ test('skips the scanner when the user prefers reduced motion', async ({ page }) 
   await page.getByLabel('Votre texte').fill('Contactez jean.dupont@exemple.fr');
   await page.getByRole('button', { name: 'Analyser' }).click();
 
-  await expect(page.getByTestId('filter-output')).toHaveText('Contactez [EMAIL_1]', { timeout: 1000 });
+  await expect(page.getByTestId('filter-output')).toHaveText('Contactez [EMAIL_1]');
   await expect(page.locator('.scan')).toHaveCount(0);
 });
 
 test('masks a passage selected by hand', async ({ page }) => {
   await openFilter(page);
-  await page.getByLabel('Votre texte').fill('Rendez-vous avec Marie Curie demain.');
+  await page.getByLabel('Votre texte').fill('Rendez-vous avec le comptable demain.');
   await page.getByRole('button', { name: 'Analyser' }).click();
   await expect(page.getByText('Aucune donnée personnelle détectée')).toBeVisible();
 
   await page.evaluate(() => {
     const node = document.querySelector('#filter-review span')!.firstChild!;
-    const start = node.textContent!.indexOf('Marie Curie');
+    const start = node.textContent!.indexOf('comptable');
     const range = document.createRange();
     range.setStart(node, start);
-    range.setEnd(node, start + 'Marie Curie'.length);
+    range.setEnd(node, start + 'comptable'.length);
     const selection = window.getSelection()!;
     selection.removeAllRanges();
     selection.addRange(range);
   });
   await page.getByRole('button', { name: 'Masquer la sélection' }).click();
 
-  await expect(page.getByTestId('filter-output')).toHaveText('Rendez-vous avec [MASQUE_1] demain.');
+  await expect(page.getByTestId('filter-output')).toHaveText('Rendez-vous avec le [MASQUE_1] demain.');
 });
 
 test('filters an uploaded .txt file and downloads note_prv.txt', async ({ page }) => {
@@ -120,4 +120,36 @@ test('never contacts another origin while filtering', async ({ page, baseURL }) 
   await downloadPromise;
 
   expect(external).toEqual([]);
+});
+
+test('masks names, places and identifiers of a school certificate, and strict mode can be turned off', async ({ page }) => {
+  await openFilter(page);
+  const certificate = [
+    'Université Kerbrat',
+    'MARTIN CLARA',
+    'Id. National : 2310045078 K',
+    'Née le 04/07/2001',
+    'à VALENCE ( DROME )',
+    'Fait à Orsay, le 15/09/2025',
+    'Sophie DELCOURT',
+  ].join('\n');
+  await page.getByLabel('Votre texte').fill(certificate);
+  await page.getByRole('button', { name: 'Analyser' }).click();
+  const output = page.getByTestId('filter-output');
+  await expect(output).toHaveText(
+    [
+      'Université [NOM_PROPRE_1]',
+      '[PERSONNE_1]',
+      'Id. National : [IDENTIFIANT_1]',
+      'Née le [DATE_1]',
+      'à [LIEU_1]',
+      'Fait à [LIEU_2], le [DATE_2]',
+      '[PERSONNE_2]',
+    ].join('\n'),
+  );
+
+  // Balanced mode: the unknown proper noun comes back, people stay masked.
+  await page.getByText('Mode strict (recommandé)').first().click();
+  await expect(output).toContainText('Université Kerbrat');
+  await expect(output).toContainText('[PERSONNE_1]');
 });

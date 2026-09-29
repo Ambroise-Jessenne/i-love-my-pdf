@@ -63,7 +63,7 @@ export const fr = {
       },
       {
         title: 'Comment fonctionne le filtrage',
-        text: 'Le filtre repère les données personnelles grâce à des règles : forme d’une adresse email ou d’un numéro de téléphone, clé de contrôle d’un IBAN ou d’un numéro de sécurité sociale, etc. Chaque donnée est remplacée par une étiquette comme [EMAIL_1]. Une même donnée garde la même étiquette dans tout le texte, pour qu’une IA comprenne encore de qui ou de quoi on parle.',
+        text: 'Le filtre repère les données personnelles grâce à des règles et à des listes officielles (prénoms, noms de famille et communes publiés par l’INSEE et l’État) : forme d’une adresse email ou d’un numéro de téléphone, clé de contrôle d’un IBAN ou d’un numéro de sécurité sociale, etc. Chaque donnée est remplacée par une étiquette comme [EMAIL_1]. Une même donnée garde la même étiquette dans tout le texte, pour qu’une IA comprenne encore de qui ou de quoi on parle.',
       },
       {
         title: 'Ses limites',
@@ -85,7 +85,9 @@ export const fr = {
     intro:
       'Collez un texte ou déposez un fichier .txt, .docx ou .pdf. Les données personnelles sont remplacées par des étiquettes : vous pouvez ensuite copier le texte vers un outil d’IA en toute tranquillité, ou télécharger un PDF caviardé.',
     warning:
-      'La détection automatique ne trouve pas tout, en particulier les noms de personnes. Relisez toujours le résultat avant de le partager.',
+      'Le filtre repère les noms, les lieux, les identifiants et les coordonnées, et le mode strict masque aussi tout nom propre ou numéro inconnu. Aucune détection automatique n’est parfaite : relisez toujours le résultat avant de le partager.',
+    strictLabel: 'Mode strict (recommandé)',
+    strictHelp: 'Masque aussi tous les noms propres et numéros inconnus. Vous pourrez démasquer d’un clic ce qui n’est pas confidentiel.',
     inputLabel: 'Votre texte',
     inputPlaceholder: 'Collez votre texte ici…',
     dropLabel: 'Ou déposez un fichier .txt, .docx ou .pdf ici',

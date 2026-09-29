@@ -49,13 +49,17 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
   const [largeFile, setLargeFile] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [strict, setStrict] = useState(true);
 
   const active = useMemo(() => detections.filter((d) => !disabled.has(d.id)), [detections, disabled]);
   const fromFile = source.kind === 'docx' || source.kind === 'pdf';
 
-  // Warm the browser cache so the scanner starts at once.
+  // Warm the browser cache so the scanner starts at once, and load the word lists ahead of the first analysis.
   useEffect(() => {
     for (const src of [scan.exposed, scan.protected, scan.seal]) new Image().src = src;
+    getFilterApi()
+      .prepare()
+      .catch(() => undefined); // retried on the first analysis
   }, [scan]);
 
   useEffect(() => {
@@ -140,7 +144,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     setBusy(true);
     setError(null);
     try {
-      setDetections(await getFilterApi().detect(text));
+      setDetections(await getFilterApi().detect(text, strict));
       setDisabled(new Set());
       setScanning(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
       setStep('review');
@@ -150,6 +154,31 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
       setBusy(false);
     }
   }
+
+  /** Switching strict mode during the review runs the detection again, keeping what was masked by hand. */
+  async function changeStrict(value: boolean) {
+    setStrict(value);
+    if (step !== 'review') return;
+    try {
+      let next = await getFilterApi().detect(text, value);
+      for (const manual of detections.filter((d) => d.type === 'MASQUE')) next = addManual(next, text, manual.start, manual.end);
+      setDetections(next);
+      setDisabled(new Set());
+    } catch {
+      setError(t.errorGeneric);
+    }
+  }
+
+  const strictToggle = (
+    <label className="strict-toggle">
+      <input type="checkbox" checked={strict} onChange={(event) => void changeStrict(event.target.checked)} />
+      <span className="strict-switch" aria-hidden="true" />
+      <span className="strict-text">
+        <strong>{t.strictLabel}</strong>
+        <small>{t.strictHelp}</small>
+      </span>
+    </label>
+  );
 
   function toggle(id: string) {
     setDisabled((previous) => {
@@ -267,6 +296,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
           ) : (
             <DropZone accept={ACCEPT} label={t.dropLabel} buttonLabel={t.dropButton} onFiles={handleFiles} />
           )}
+          {strictToggle}
           <button type="button" className="btn" onClick={analyze} disabled={busy || reading || text.trim() === ''}>
             {busy ? <span className="spinner" aria-hidden="true" /> : <Icon name="sparkle" />}
             {busy ? t.analyzing : t.analyze}
@@ -277,6 +307,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
           <div className="filter-panel">
             <h2>{t.reviewTitle}</h2>
             <p className="filter-help">{t.reviewHelp}</p>
+            {!scanning && strictToggle}
             <p className="filter-count" aria-live="polite">
               {scanning && <span className="spinner" aria-hidden="true" />}
               {scanning ? t.scanning : active.length === 0 ? t.noneFound : t.found.replace('{count}', String(active.length))}

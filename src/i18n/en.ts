@@ -65,7 +65,7 @@ export const en: Dict = {
       },
       {
         title: 'How filtering works',
-        text: 'The filter spots personal data with rules: the shape of an email address or phone number, the check digits of an IBAN or a French social security number, and so on. Each item is replaced by a label such as [EMAIL_1]. The same item keeps the same label throughout the text, so an AI can still tell who or what is being discussed.',
+        text: 'The filter spots personal data with rules and official lists (first names, surnames and French towns published by INSEE and the French State): the shape of an email address or phone number, the check digits of an IBAN or a French social security number, and so on. Each item is replaced by a label such as [EMAIL_1]. The same item keeps the same label throughout the text, so an AI can still tell who or what is being discussed.',
       },
       {
         title: 'Its limits',
@@ -87,7 +87,9 @@ export const en: Dict = {
     intro:
       'Paste a text or drop a .txt, .docx or .pdf file. Personal data is replaced with labels, so you can then copy the text into an AI tool with peace of mind, or download a redacted PDF.',
     warning:
-      'Automatic detection does not catch everything, especially people’s names. Always review the result before sharing it.',
+      'The filter spots names, places, identifiers and contact details, and strict mode also masks every unknown proper noun or number. No automatic detection is perfect: always review the result before sharing it.',
+    strictLabel: 'Strict mode (recommended)',
+    strictHelp: 'Also masks every unknown proper noun and number. You can unmask anything that is not confidential with one click.',
     inputLabel: 'Your text',
     inputPlaceholder: 'Paste your text here…',
     dropLabel: 'Or drop a .txt, .docx or .pdf file here',

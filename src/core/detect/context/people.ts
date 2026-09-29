@@ -1,6 +1,7 @@
 import type { Candidate } from '../resolve';
 import { isCommonWord, type Lexicon } from '../lexicon';
 import { onlySpacesBetween, tokenAt, type Token } from '../tokens';
+import { ACRONYMS } from './acronyms';
 
 export const PERSON_PRIORITY = 35;
 const MAX_NAME_WORDS = 5;
@@ -28,7 +29,7 @@ function person(text: string, from: Token, to: Token): Candidate {
 
 /** A word that can be part of a person's name here. */
 function nameLike(token: Token, lexicon: Lexicon): boolean {
-  if (!token.capitalized || token.key.length < 2) return false;
+  if (!token.capitalized || token.key.length < 2 || ACRONYMS.has(token.key)) return false;
   if (!isCommonWord(lexicon, token.key)) return true;
   const known = lexicon.surnames.has(token.key) || lexicon.firstNames.has(token.key);
   // A known name that is also an ordinary word (Lombard, Pierre) only counts in capitals or mid-sentence.
@@ -81,7 +82,7 @@ export function peopleCandidates(text: string, tokens: Token[], lexicon: Lexicon
     // Known first name: Estelle IACONA, LOMBARD ALICIA, Jean-Pierre Martin. The official list also holds
     // « De », « Le » or « Or »: very short entries and function words never start a name on their own.
     if (!token.capitalized || !lexicon.firstNames.has(token.key)) return;
-    if (token.key.length < 3 || PARTICLES.has(token.key) || FUNCTION_WORDS.has(token.key)) return;
+    if (token.key.length < 3 || PARTICLES.has(token.key) || FUNCTION_WORDS.has(token.key) || ACRONYMS.has(token.key)) return;
     const next = tokens[i + 1];
     const followedByName = !!next && onlySpacesBetween(text, token.end, next.start) && nameLike(next, lexicon);
     const previous = tokens[i - 1];
