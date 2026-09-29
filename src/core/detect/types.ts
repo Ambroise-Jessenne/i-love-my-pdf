@@ -8,6 +8,10 @@ export type PiiType =
   | 'ADRESSE'
   | 'IP'
   | 'URL'
+  | 'IDENTIFIANT'
+  | 'PERSONNE'
+  | 'LIEU'
+  | 'NOM_PROPRE'
   | 'MASQUE';
 
 export interface Detection {
