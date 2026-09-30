@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  // The Filter tool plays a ~2.5 s scanner animation before showing its result.
+  // The Filter tool plays a ~3 s scanner animation before showing its result.
   expect: { timeout: 10_000 },
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {

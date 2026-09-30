@@ -253,60 +253,60 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
           {error}
         </p>
       )}
-      {step === 'input' ? (
-        <div className="filter-input rise-in">
-          <label htmlFor="filter-text" className="filter-label">
-            {t.inputLabel}
-          </label>
-          {source.kind !== 'text' && (
-            <div className="file-card rise-in">
-              <Icon name="file" className="file-card-icon" />
-              <div className="file-card-text">
-                <strong>{source.name}</strong>
-                <span>{fileMeta}</span>
+      <div className="filter-layout">
+        {step === 'input' ? (
+          <div className="filter-panel filter-input">
+            <label htmlFor="filter-text" className="filter-panel-title">
+              {t.inputLabel}
+            </label>
+            {source.kind !== 'text' && (
+              <div className="file-card rise-in">
+                <Icon name="file" className="file-card-icon" />
+                <div className="file-card-text">
+                  <strong>{source.name}</strong>
+                  <span>{fileMeta}</span>
+                </div>
+                <button type="button" className="btn btn-ghost" onClick={removeFile}>
+                  <Icon name="close" />
+                  {t.fileRemove}
+                </button>
               </div>
-              <button type="button" className="btn btn-ghost" onClick={removeFile}>
-                <Icon name="close" />
-                {t.fileRemove}
-              </button>
-            </div>
-          )}
-          <textarea
-            id="filter-text"
-            value={text}
-            placeholder={t.inputPlaceholder}
-            rows={12}
-            readOnly={fromFile}
-            aria-describedby={fromFile ? 'filter-readonly' : undefined}
-            onChange={(event) => {
-              setText(event.target.value);
-              if (source.kind === 'txt') setSource({ kind: 'text' });
-            }}
-          />
-          {fromFile && (
-            <p id="filter-readonly" className="filter-note">
-              {t.fileReadOnly}
-            </p>
-          )}
-          {largeFile && <Notice tone="info">{t.largeFile}</Notice>}
-          {reading ? (
-            <p className="filter-reading" role="status">
-              <span className="spinner" aria-hidden="true" />
-              {t.reading}
-            </p>
-          ) : (
-            <DropZone accept={ACCEPT} label={t.dropLabel} buttonLabel={t.dropButton} onFiles={handleFiles} />
-          )}
-          {strictToggle}
-          <button type="button" className="btn" onClick={analyze} disabled={busy || reading || text.trim() === ''}>
-            {busy ? <span className="spinner" aria-hidden="true" /> : <Icon name="sparkle" />}
-            {busy ? t.analyzing : t.analyze}
-          </button>
-        </div>
-      ) : (
-        <div className="filter-review-layout rise-in">
+            )}
+            <textarea
+              id="filter-text"
+              value={text}
+              placeholder={t.inputPlaceholder}
+              rows={10}
+              readOnly={fromFile}
+              aria-describedby={fromFile ? 'filter-readonly' : undefined}
+              onChange={(event) => {
+                setText(event.target.value);
+                if (source.kind === 'txt') setSource({ kind: 'text' });
+              }}
+            />
+            {fromFile && (
+              <p id="filter-readonly" className="filter-note">
+                {t.fileReadOnly}
+              </p>
+            )}
+            {largeFile && <Notice tone="info">{t.largeFile}</Notice>}
+            {reading ? (
+              <p className="filter-reading" role="status">
+                <span className="spinner" aria-hidden="true" />
+                {t.reading}
+              </p>
+            ) : (
+              <DropZone accept={ACCEPT} label={t.dropLabel} buttonLabel={t.dropButton} onFiles={handleFiles} />
+            )}
+            {strictToggle}
+            <button type="button" className="btn" onClick={analyze} disabled={busy || reading || text.trim() === ''}>
+              {busy ? <span className="spinner" aria-hidden="true" /> : <Icon name="sparkle" />}
+              {busy ? t.analyzing : t.analyze}
+            </button>
+          </div>
+        ) : (
           <div className="filter-panel">
-            <h2>{t.reviewTitle}</h2>
+            <h2 className="filter-panel-title">{t.reviewTitle}</h2>
             <p className="filter-help">{t.reviewHelp}</p>
             {!scanning && strictToggle}
             <p className="filter-count" aria-live="polite">
@@ -332,57 +332,65 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
               {t.maskSelection}
             </button>
           </div>
-          <div className="filter-panel">
-            <div className="filter-panel-head">
-              <h2>{t.resultTitle}</h2>
-              {!scanning && (
-                <span className="seal">
-                  <img src={scan.seal} alt="" />
-                  {t.protectedBadge}
-                </span>
-              )}
-            </div>
+        )}
+        <div className="filter-panel">
+          <div className="filter-panel-head">
+            <h2 className="filter-panel-title">{t.resultTitle}</h2>
+            {step === 'review' && !scanning && (
+              <span className="seal">
+                <img src={scan.seal} alt="" />
+                {t.protectedBadge}
+              </span>
+            )}
+          </div>
+          {step === 'review' && (
             <p className="sr-only" role="status">
               {scanning ? '' : t.resultReady}
             </p>
-            {scanning ? (
-              <ScanReveal images={scan} label={t.scanLabel} onDone={() => setScanning(false)} />
-            ) : (
-              <>
-                <pre className="filter-output" data-testid="filter-output">
-                  {output}
-                </pre>
-                <div className="filter-actions rise-in">
-                  <button type="button" className="btn" onClick={copy}>
-                    <Icon key={copied ? 'done' : 'idle'} name={copied ? 'check' : 'copy'} className="icon-pop" />
-                    {copied ? t.copied : t.copy}
+          )}
+          {step === 'input' ? (
+            // Until the analysis, the portrait waits where the filtered text will appear: the scanner then sweeps over it.
+            <div className="scan-stage">
+              <img className="scan-img" src={scan.exposed} alt="" decoding="async" />
+              <p className="scan-caption">{t.resultPlaceholder}</p>
+            </div>
+          ) : scanning ? (
+            <ScanReveal images={scan} label={t.scanLabel} onDone={() => setScanning(false)} />
+          ) : (
+            <>
+              <pre className="filter-output" data-testid="filter-output">
+                {output}
+              </pre>
+              <div className="filter-actions rise-in">
+                <button type="button" className="btn" onClick={copy}>
+                  <Icon key={copied ? 'done' : 'idle'} name={copied ? 'check' : 'copy'} className="icon-pop" />
+                  {copied ? t.copied : t.copy}
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={exportFile} disabled={exporting}>
+                  {exporting ? <span className="spinner" aria-hidden="true" /> : <Icon name="download" />}
+                  {exporting && source.kind === 'pdf' ? t.redacting : source.kind === 'pdf' ? t.downloadPdf : t.download}
+                </button>
+                {source.kind === 'pdf' && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => downloadText(output, filteredName(source.name, '.txt'))}
+                  >
+                    <Icon name="download" />
+                    {t.downloadText}
                   </button>
-                  <button type="button" className="btn btn-secondary" onClick={exportFile} disabled={exporting}>
-                    {exporting ? <span className="spinner" aria-hidden="true" /> : <Icon name="download" />}
-                    {exporting && source.kind === 'pdf' ? t.redacting : source.kind === 'pdf' ? t.downloadPdf : t.download}
-                  </button>
-                  {source.kind === 'pdf' && (
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={() => downloadText(output, filteredName(source.name, '.txt'))}
-                    >
-                      <Icon name="download" />
-                      {t.downloadText}
-                    </button>
-                  )}
-                  <button type="button" className="btn btn-ghost" onClick={restart}>
-                    <Icon name="restart" />
-                    {t.restart}
-                  </button>
-                </div>
-                {source.kind === 'pdf' && <p className="filter-note">{t.pdfNote}</p>}
-                {source.kind === 'docx' && <p className="filter-note">{t.docxNote}</p>}
-              </>
-            )}
-          </div>
+                )}
+                <button type="button" className="btn btn-ghost" onClick={restart}>
+                  <Icon name="restart" />
+                  {t.restart}
+                </button>
+              </div>
+              {source.kind === 'pdf' && <p className="filter-note">{t.pdfNote}</p>}
+              {source.kind === 'docx' && <p className="filter-note">{t.docxNote}</p>}
+            </>
+          )}
         </div>
-      )}
+      </div>
     </section>
   );
 }

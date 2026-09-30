@@ -117,6 +117,7 @@ export const en: Dict = {
     resultReady: 'The filtered text is ready to copy.',
     protectedBadge: 'Protected',
     resultTitle: 'Filtered text',
+    resultPlaceholder: 'The filtered text will appear here.',
     copy: 'Copy filtered text',
     copied: 'Copied!',
     download: 'Download filtered document',

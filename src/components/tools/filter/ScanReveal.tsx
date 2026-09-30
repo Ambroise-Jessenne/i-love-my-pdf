@@ -17,7 +17,7 @@ interface ScanRevealProps {
 
 const LOAD_MAX_MS = 800; // never wait longer than this for the images
 const SCAN_MS = 1600;
-const HOLD_MS = 450;
+const HOLD_MS = 1100; // the original painting, apple and all, stays on screen a moment
 const LEAVE_MS = 380;
 
 type Phase = 'load' | 'scan' | 'hold' | 'leave';
@@ -59,7 +59,7 @@ export function ScanReveal({ images, label, onDone }: ScanRevealProps) {
   const style = { '--scan-duration': `${SCAN_MS}ms`, '--leave-duration': `${LEAVE_MS}ms` } as CSSProperties;
 
   return (
-    <div className={`scan is-${phase}`} style={style} role="img" aria-label={label}>
+    <div className={`scan-stage scan is-${phase}`} style={style} role="img" aria-label={label}>
       <img className="scan-img" src={images.exposed} alt="" decoding="async" />
       <img className="scan-img scan-protected" src={images.protected} alt="" decoding="async" />
       <div className="scan-sweep" />

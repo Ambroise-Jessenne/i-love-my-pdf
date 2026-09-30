@@ -115,6 +115,7 @@ export const fr = {
     resultReady: 'Le texte filtré est prêt à être copié.',
     protectedBadge: 'Protégé',
     resultTitle: 'Texte filtré',
+    resultPlaceholder: 'Le texte filtré apparaîtra ici.',
     copy: 'Copier le texte filtré',
     copied: 'Copié !',
     download: 'Télécharger le document filtré',
