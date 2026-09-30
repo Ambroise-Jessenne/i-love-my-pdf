@@ -4,7 +4,7 @@ dist/
 test-results/
 playwright-report/
 
-# Original, unaligned Magritte sources (the aligned copies used by the site are tracked).
+# Original, unaligned scanner images (the aligned copies used by the site are tracked).
 src/assets/images/fils-homme.jpeg
 src/assets/images/fils-homme-nu.png
 

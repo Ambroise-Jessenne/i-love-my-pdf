@@ -84,4 +84,4 @@ Code under the [MIT licence](LICENSE), © 2026 Ambroise Jessenne. Third-party co
 - Libraries: Astro, React (MIT); pdf.js (Apache 2.0); pdf-lib, @pdf-lib/fontkit, fflate, docx (MIT); mammoth (BSD 2-Clause); Comlink (Apache 2.0).
 - Data: first names and surnames — INSEE; French towns, départements and régions — geo.api.gouv.fr; both under the Licence Ouverte / Open Licence 2.0 (Etalab). Word lists — Loren Brichter, *Words*, CC0 1.0. Details: [public/lexicon/SOURCES.md](public/lexicon/SOURCES.md).
 - Font: Liberation Sans (Red Hat), GPL v2 with an exception for embedding in documents, shipped with pdf.js.
-- Filter tool illustration after René Magritte, *The Son of Man* (1964). Yes, I don't own the rights… so what?
+- Image for the filtering: *The Son of Man* (1964).

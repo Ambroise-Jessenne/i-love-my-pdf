@@ -84,4 +84,4 @@ Code sous licence [MIT](LICENSE), © 2026 Ambroise Jessenne. Les composants tier
 - Bibliothèques : Astro, React (MIT) ; pdf.js (Apache 2.0) ; pdf-lib, @pdf-lib/fontkit, fflate, docx (MIT) ; mammoth (BSD 2-Clause) ; Comlink (Apache 2.0).
 - Données : prénoms et noms de famille — INSEE ; communes, départements et régions — geo.api.gouv.fr ; tous deux sous Licence Ouverte / Open Licence 2.0 (Etalab). Listes de mots — Loren Brichter, *Words*, CC0 1.0. Détails : [public/lexicon/SOURCES.md](public/lexicon/SOURCES.md).
 - Police : Liberation Sans (Red Hat), GPL v2 avec exception pour l'incorporation dans les documents, fournie avec pdf.js.
-- Illustration de l'outil « Filtrer » d'après René Magritte, *Le Fils de l'homme* (1964). Oui, je n'ai pas les droits… et alors ?
+- Image pour le filtrage : *Le Fils de l'homme* (1964).
