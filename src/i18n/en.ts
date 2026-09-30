@@ -2,7 +2,7 @@ import type { Dict } from './fr';
 
 export const en: Dict = {
   meta: {
-    title: 'I Love My P.D.F. — your documents stay with you',
+    title: 'I Love My P.D.F. — your data stays with you',
     description:
       'Filter your personal data, merge, split and convert your PDFs right in your browser. Nothing is sent over the Internet.',
   },
