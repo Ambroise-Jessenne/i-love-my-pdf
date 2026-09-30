@@ -307,6 +307,7 @@ main {
   padding: var(--space-5) 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+  text-align: center;
 }
 
 /* Shared animations */

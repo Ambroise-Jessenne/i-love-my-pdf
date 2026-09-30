@@ -66,8 +66,16 @@ const tools = [
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+
+  /* The two main calls to action: larger than the site's other buttons. */
+  .hero-actions .btn {
+    min-width: 15rem;
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--font-size-lg);
   }
 
   .tools,

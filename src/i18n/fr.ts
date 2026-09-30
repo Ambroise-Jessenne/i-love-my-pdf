@@ -18,7 +18,7 @@ export const fr = {
     about: 'À propos et crédits',
   },
   home: {
-    title: 'Vos documents ne quittent jamais votre navigateur.',
+    title: 'Vos données ne quittent jamais votre navigateur.',
     subtitle:
       'Filtrez vos données personnelles avant de les confier à une IA, fusionnez, divisez et convertissez vos PDF. Tout se passe sur votre appareil : rien n’est envoyé sur Internet.',
     cta: 'Filtrer un texte',

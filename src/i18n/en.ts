@@ -20,7 +20,7 @@ export const en: Dict = {
     about: 'About and credits',
   },
   home: {
-    title: 'Your documents never leave your browser.',
+    title: 'Your data never leaves your browser.',
     subtitle:
       'Filter your personal data before handing it to an AI, merge, split and convert your PDFs. Everything happens on your device: nothing is sent over the Internet.',
     cta: 'Filter a text',

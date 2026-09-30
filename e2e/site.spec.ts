@@ -4,11 +4,11 @@ test('home is available in French and English', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveURL(/\/fr\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Vos documents ne quittent jamais votre navigateur.',
+    'Vos données ne quittent jamais votre navigateur.',
   );
   await page.getByRole('link', { name: 'English' }).click();
   await expect(page).toHaveURL(/\/en\/$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your documents never leave your browser.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your data never leaves your browser.');
 });
 
 test('how-it-works page explains the name', async ({ page }) => {
