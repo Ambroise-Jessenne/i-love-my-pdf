@@ -2,11 +2,13 @@
 
 *[Version française](README.md)*
 
-**Your documents never leave your browser.**
+**Your data never leaves your browser.**
 
 I Love My P.D.F. (*P.D.F.* stands for **Private Data Filter**) is a free, open-source site to prepare your documents before sharing them. All processing happens in the browser: no file and no text is ever sent to a server.
 
 Site: https://i-love-my-pdf.vercel.app
+
+![A fictitious letter, filtered: names, address, phone and email are replaced with labels](docs/images/filter.png)
 
 ## The tools
 
@@ -47,7 +49,7 @@ The site is then available at http://localhost:4321.
 | `npm run preview` | Serves the built site |
 | `npm run check` | Type checks (Astro + TypeScript) |
 | `npm test` | Unit tests (Vitest) |
-| `npm run test:e2e` | End-to-end tests (Playwright; first install Chromium with `npx playwright install chromium`) |
+| `npm run test:e2e` | End-to-end tests (Playwright; first install the browsers with `npx playwright install chromium webkit`) |
 
 ## Architecture
 
@@ -62,7 +64,7 @@ src/
   i18n/        French and English texts
 public/lexicon lists of first names, surnames, towns and common words (see SOURCES.md)
 e2e/           Playwright tests
-docs/          how the detection engine works, designs and plans
+docs/          how the detection engine works
 ```
 
 ## Known limits
@@ -77,9 +79,9 @@ Contributions are welcome: read the [contributing guide](CONTRIBUTING.md).
 
 ## Licence and credits
 
-Code under the [MIT licence](LICENSE), © 2026 Ambroise Jessenne.
+Code under the [MIT licence](LICENSE), © 2026 Ambroise Jessenne. Third-party components keep their own licences:
 
 - Libraries: Astro, React (MIT); pdf.js (Apache 2.0); pdf-lib, @pdf-lib/fontkit, fflate, docx (MIT); mammoth (BSD 2-Clause); Comlink (Apache 2.0).
 - Data: first names and surnames — INSEE; French towns, départements and régions — geo.api.gouv.fr; both under the Licence Ouverte / Open Licence 2.0 (Etalab). Word lists — Loren Brichter, *Words*, CC0 1.0. Details: [public/lexicon/SOURCES.md](public/lexicon/SOURCES.md).
 - Font: Liberation Sans (Red Hat), GPL v2 with an exception for embedding in documents, shipped with pdf.js.
-- Filter tool illustration after René Magritte, *The Son of Man* (1964) — test image, to be replaced before publication.
+- Filter tool illustration after René Magritte, *The Son of Man* (1964). Yes, I don't own the rights… so what?

@@ -10,7 +10,7 @@ Prérequis : Node.js 22.12 ou plus récent.
 
 ```bash
 npm install
-npx playwright install chromium   # pour les tests de bout en bout
+npx playwright install chromium webkit   # pour les tests de bout en bout
 npm run dev                        # http://localhost:4321
 ```
 
@@ -62,7 +62,7 @@ En contribuant, vous acceptez que votre contribution soit publiée sous la [lice
 
 ## English summary
 
-- **Setup**: Node.js ≥ 22.12, `npm install`, `npx playwright install chromium`, `npm run dev`. Before a pull request: `npm run check`, `npm test`, `npm run test:e2e`.
+- **Setup**: Node.js ≥ 22.12, `npm install`, `npx playwright install chromium webkit`, `npm run dev`. Before a pull request: `npm run check`, `npm test`, `npm run test:e2e`.
 - **Rules**: nothing may leave the device (no request to another origin, no analytics, no cookies; do not loosen the CSP); heavy work runs in workers, `src/core/` stays pure and tested; every visible text exists in French and English; keyboard and screen-reader accessible, reduced motion respected; **test data is always fictitious**.
 - **Detection engine**: add any missed case to `src/core/detect/documents.test.ts` (personal data wrapped in `⟦…⟧`) before fixing it, and update `docs/detection.md`.
 - **Adding a tool**: core functions and tests in `src/core/`, exposed by a worker; texts in `src/i18n/`; an island in `src/components/tools/<tool>/`; a page in `src/pages/[lang]/`; register it in `OtherTools.astro` and the home page; an end-to-end test including the no-external-request check.

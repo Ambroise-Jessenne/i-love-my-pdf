@@ -2,11 +2,13 @@
 
 *[English version](README.en.md)*
 
-**Vos documents ne quittent jamais votre navigateur.**
+**Vos données ne quittent jamais votre navigateur.**
 
 I Love My P.D.F. (*P.D.F.* pour **Private Data Filter**) est un site gratuit et libre pour préparer vos documents avant de les partager. Tout le traitement a lieu dans le navigateur : aucun fichier, aucun texte n'est envoyé à un serveur.
 
 Site : https://i-love-my-pdf.vercel.app
+
+![Le texte d’un courrier fictif, filtré : les noms, l’adresse, le téléphone et l’email sont remplacés par des étiquettes](docs/images/filtrer.png)
 
 ## Les outils
 
@@ -47,7 +49,7 @@ Le site est alors disponible sur http://localhost:4321.
 | `npm run preview` | Sert la version construite |
 | `npm run check` | Vérifie les types (Astro + TypeScript) |
 | `npm test` | Tests unitaires (Vitest) |
-| `npm run test:e2e` | Tests de bout en bout (Playwright ; installez d'abord Chromium avec `npx playwright install chromium`) |
+| `npm run test:e2e` | Tests de bout en bout (Playwright ; installez d'abord les navigateurs avec `npx playwright install chromium webkit`) |
 
 ## Architecture
 
@@ -62,7 +64,7 @@ src/
   i18n/        textes français et anglais
 public/lexicon listes de prénoms, noms, communes et mots courants (voir SOURCES.md)
 e2e/           tests Playwright
-docs/          fonctionnement du moteur de détection, conceptions et plans
+docs/          fonctionnement du moteur de détection
 ```
 
 ## Limites connues
@@ -77,9 +79,9 @@ Les contributions sont bienvenues : lisez le [guide des contributeurs](CONTRIBUT
 
 ## Licence et crédits
 
-Code sous licence [MIT](LICENSE), © 2026 Ambroise Jessenne.
+Code sous licence [MIT](LICENSE), © 2026 Ambroise Jessenne. Les composants tiers gardent leur propre licence :
 
 - Bibliothèques : Astro, React (MIT) ; pdf.js (Apache 2.0) ; pdf-lib, @pdf-lib/fontkit, fflate, docx (MIT) ; mammoth (BSD 2-Clause) ; Comlink (Apache 2.0).
 - Données : prénoms et noms de famille — INSEE ; communes, départements et régions — geo.api.gouv.fr ; tous deux sous Licence Ouverte / Open Licence 2.0 (Etalab). Listes de mots — Loren Brichter, *Words*, CC0 1.0. Détails : [public/lexicon/SOURCES.md](public/lexicon/SOURCES.md).
 - Police : Liberation Sans (Red Hat), GPL v2 avec exception pour l'incorporation dans les documents, fournie avec pdf.js.
-- Illustration de l'outil « Filtrer » d'après René Magritte, *Le Fils de l'homme* (1964) — image de test, à remplacer avant la publication.
+- Illustration de l'outil « Filtrer » d'après René Magritte, *Le Fils de l'homme* (1964). Oui, je n'ai pas les droits… et alors ?
