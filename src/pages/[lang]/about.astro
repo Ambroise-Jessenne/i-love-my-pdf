@@ -1,12 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getDict, langPaths, type Lang } from '../../i18n';
+import { REPOSITORY } from '../../site';
 
 export function getStaticPaths() {
   return langPaths();
 }
-
-const REPOSITORY = 'https://github.com/Ambroise-Jessenne/i-love-my-pdf';
 
 const lang = Astro.params.lang as Lang;
 const t = getDict(lang);

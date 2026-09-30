@@ -45,7 +45,8 @@ export const en: Dict = {
       },
       {
         title: 'Open to everyone',
-        text: 'The source code, under the MIT license, will be public: anyone will be able to check what the site does.',
+        text: 'The source code is public, under the MIT license: anyone can check what the site does.',
+        source: true,
       },
       {
         title: 'Zero trackers',
@@ -79,7 +80,8 @@ export const en: Dict = {
       },
       {
         title: 'Open source',
-        text: 'The source code will be published under the MIT license. Anyone will be able to read it, check it and suggest improvements.',
+        text: 'The source code is public, under the MIT license. Anyone can read it, check it and suggest improvements.',
+        source: true,
       },
     ],
     acronym: 'And the name? P.D.F. stands for Private Data Filter: a filter for your private data.',

@@ -43,7 +43,8 @@ export const fr = {
       },
       {
         title: 'Un code ouvert à tous',
-        text: 'Le code source, sous licence MIT, sera public : chacun pourra vérifier ce que fait le site.',
+        text: 'Le code source est public, sous licence MIT : chacun peut vérifier ce que fait le site.',
+        source: true,
       },
       {
         title: 'Zéro traceur',
@@ -77,7 +78,8 @@ export const fr = {
       },
       {
         title: 'Un code ouvert',
-        text: 'Le code source sera publié sous licence MIT. Tout le monde pourra le lire, le vérifier et proposer des améliorations.',
+        text: 'Le code source est public, sous licence MIT. Tout le monde peut le lire, le vérifier et proposer des améliorations.',
+        source: true,
       },
     ],
     acronym: 'Et le nom ? P.D.F. veut dire Private Data Filter : un filtre pour vos données privées.',

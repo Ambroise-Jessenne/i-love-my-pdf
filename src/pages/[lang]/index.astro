@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getDict, langPaths, type Lang } from '../../i18n';
+import { REPOSITORY } from '../../site';
 
 export function getStaticPaths() {
   return langPaths();
@@ -51,6 +52,11 @@ const tools = [
           <li>
             <h3>{proof.title}</h3>
             <p>{proof.text}</p>
+            {'source' in proof && (
+              <a class="source-link" href={REPOSITORY} rel="noopener noreferrer">
+                {t.about.sourceLink}
+              </a>
+            )}
           </li>
         ))
       }

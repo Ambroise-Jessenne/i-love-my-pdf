@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getDict, langPaths, type Lang } from '../../i18n';
+import { REPOSITORY } from '../../site';
 
 export function getStaticPaths() {
   return langPaths();
@@ -19,6 +20,11 @@ const t = getDict(lang);
         <section>
           <h2>{section.title}</h2>
           <p>{section.text}</p>
+          {'source' in section && (
+            <a class="source-link" href={REPOSITORY} rel="noopener noreferrer">
+              {t.about.sourceLink}
+            </a>
+          )}
         </section>
       ))
     }
