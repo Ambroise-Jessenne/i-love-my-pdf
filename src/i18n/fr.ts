@@ -87,7 +87,7 @@ export const fr = {
   filter: {
     title: 'Filtrer vos données personnelles',
     intro:
-      'Collez un texte ou déposez un fichier .txt, .docx ou .pdf. Les données personnelles sont remplacées par des étiquettes : vous pouvez ensuite copier le texte vers un outil d’IA en toute tranquillité, ou télécharger un PDF caviardé.',
+      'Collez un texte ou déposez un fichier .txt, .docx ou .pdf. Les données personnelles sont remplacées par des étiquettes : vous pouvez ensuite copier le texte vers un outil d’IA en toute tranquillité, ou télécharger un PDF masqué.',
     warning:
       'Le filtre repère les noms, les lieux, les identifiants et les coordonnées, et le mode strict masque aussi tout nom propre ou numéro inconnu. Aucune détection automatique n’est parfaite : relisez toujours le résultat avant de le partager.',
     strictLabel: 'Mode strict (recommandé)',
@@ -118,11 +118,11 @@ export const fr = {
     copy: 'Copier le texte filtré',
     copied: 'Copié !',
     download: 'Télécharger le document filtré',
-    downloadPdf: 'Télécharger le PDF caviardé',
+    downloadPdf: 'Télécharger le PDF masqué',
     downloadText: 'Télécharger le texte filtré',
-    redacting: 'Caviardage en cours…',
+    redacting: 'Masquage en cours…',
     pdfNote:
-      'Dans le PDF caviardé, chaque page qui porte un encart noir devient une image : son texte n’est plus sélectionnable, et rien ne reste caché sous les encarts.',
+      'Dans le PDF masqué, chaque page qui porte un encart noir devient une image : son texte n’est plus sélectionnable, et rien ne reste caché sous les encarts.',
     docxNote: 'Les images et les objets incorporés au document Word ne sont pas filtrés.',
     restart: 'Recommencer',
     defaultFileName: 'texte.txt',

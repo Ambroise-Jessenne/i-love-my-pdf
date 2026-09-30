@@ -76,7 +76,7 @@ test('redacts a PDF with black boxes and leaves no text under them', async ({ pa
   await expect(page.getByTestId('filter-output')).toHaveText('Mail : [EMAIL_1]\nPage publique\n');
 
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Télécharger le PDF caviardé' }).click();
+  await page.getByRole('button', { name: 'Télécharger le PDF masqué' }).click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe('lettre_prv.pdf');
   expect(await pdfPageTexts(await readFile(await download.path()))).toEqual(['', 'Page publique']);

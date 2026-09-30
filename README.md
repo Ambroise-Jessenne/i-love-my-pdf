@@ -12,7 +12,7 @@ Site : https://i-love-my-pdf.vercel.app
 
 | Outil | Ce qu'il fait |
 |---|---|
-| **Filtrer** | Repère les données personnelles d'un texte, d'un `.txt`, d'un `.docx` ou d'un `.pdf` et les remplace par des étiquettes (`[PERSONNE_1]`, `[EMAIL_1]`…), pour les confier sans risque à une IA. Relecture avec démasquage en un clic et masquage manuel. Pour un PDF : PDF caviardé par encarts noirs. |
+| **Filtrer** | Repère les données personnelles d'un texte, d'un `.txt`, d'un `.docx` ou d'un `.pdf` et les remplace par des étiquettes (`[PERSONNE_1]`, `[EMAIL_1]`…), pour les confier sans risque à une IA. Relecture avec démasquage en un clic et masquage manuel. Pour un PDF : PDF masqué par des encarts noirs. |
 | **Fusionner** | Réunit plusieurs PDF dans l'ordre choisi (glisser-déposer). |
 | **Diviser** | Extrait des pages ou découpe un PDF en plusieurs fichiers (ZIP). |
 | **PDF → Word** | Produit un `.docx` modifiable (titres, paragraphes, gras, italique). |
