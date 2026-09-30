@@ -7,6 +7,13 @@ export function extensionOf(name: string): string {
   return name.toLowerCase().split('.').pop() ?? '';
 }
 
+/** Whether a file is a PDF: by its extension, its type, or failing both by its first bytes (a file saved on a Mac may have no extension). */
+export async function isPdf(file: File): Promise<boolean> {
+  if (extensionOf(file.name) === 'pdf' || file.type === 'application/pdf') return true;
+  const head = new Uint8Array(await file.slice(0, 1024).arrayBuffer());
+  return String.fromCharCode(...head).includes('%PDF-');
+}
+
 /** File name without its extension (« rapport.final.pdf » → « rapport.final »). */
 export function baseName(name: string): string {
   const dot = name.lastIndexOf('.');

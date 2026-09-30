@@ -4,7 +4,7 @@ import { getPdfToolsApi } from '../../../workers/pdfToolsClient';
 import { DropZone } from '../../ui/DropZone';
 import { Icon } from '../../ui/Icon';
 import { downloadBlob } from '../../ui/download';
-import { baseName, extensionOf, fill, LARGE_FILE, PDF_ACCEPT, readBytes } from '../common/files';
+import { baseName, fill, isPdf, LARGE_FILE, PDF_ACCEPT, readBytes } from '../common/files';
 import { ProgressBar } from '../common/ProgressBar';
 import '../common/tools.css';
 
@@ -37,7 +37,7 @@ export default function MergeTool({ t }: { t: Dict['tools'] }) {
     const { loadPdfDocument, renderThumbnail, closeDocument, PdfError } = await import('../../pdf/pdfjs');
     try {
       for (const file of files) {
-        if (extensionOf(file.name) !== 'pdf') {
+        if (!(await isPdf(file))) {
           setError(t.errorPdfOnly);
           continue;
         }

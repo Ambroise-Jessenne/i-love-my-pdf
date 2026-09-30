@@ -1,7 +1,11 @@
 // pdf.js in the page, shared by the PDF tools: opening documents, page thumbnails and styled text.
 // Loaded on demand; its worker and data files are served by the site itself.
-import { getDocument, GlobalWorkerOptions, Util, type PDFDocumentProxy } from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+// The legacy build, not the modern one: the modern build calls JavaScript features only the latest browsers
+// have (Map.getOrInsertComputed, Math.sumPrecise…), so it could not open any PDF on a Mac whose Safari
+// is not brand new. The legacy build ships fallbacks for them, polyfills.ts for the one it lacks.
+import './polyfills';
+import { getDocument, GlobalWorkerOptions, Util, type PDFDocumentProxy } from 'pdfjs-dist/legacy/build/pdf.mjs';
+import workerUrl from './pdf.worker.ts?worker&url';
 import type { TextItem } from 'pdfjs-dist/types/src/display/api';
 import type { StyledItem, StyledPage } from '../../core/convert/pdfLayout';
 

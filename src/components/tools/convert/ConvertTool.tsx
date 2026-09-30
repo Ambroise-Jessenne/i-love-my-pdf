@@ -5,7 +5,7 @@ import { DropZone } from '../../ui/DropZone';
 import { Icon } from '../../ui/Icon';
 import { Notice } from '../../ui/Notice';
 import { downloadBlob } from '../../ui/download';
-import { baseName, DOCX_ACCEPT, DOCX_TYPE, extensionOf, fill, LARGE_FILE, PDF_ACCEPT, readBytes } from '../common/files';
+import { baseName, DOCX_ACCEPT, DOCX_TYPE, extensionOf, fill, isPdf, LARGE_FILE, PDF_ACCEPT, readBytes } from '../common/files';
 import { ProgressBar } from '../common/ProgressBar';
 import '../common/tools.css';
 
@@ -26,7 +26,7 @@ export default function ConvertTool({ t, direction }: ConvertToolProps) {
     const [chosen] = files;
     setError(null);
     setDone(false);
-    if (extensionOf(chosen.name) !== (toWord ? 'pdf' : 'docx')) {
+    if (toWord ? !(await isPdf(chosen)) : extensionOf(chosen.name) !== 'docx') {
       setError(toWord ? t.errorPdfOnly : t.errorWordOnly);
       return;
     }

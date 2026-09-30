@@ -9,6 +9,7 @@ import { DropZone } from '../../ui/DropZone';
 import { Icon } from '../../ui/Icon';
 import { Notice } from '../../ui/Notice';
 import { downloadBlob, downloadText } from '../../ui/download';
+import { isPdf } from '../common/files';
 import { HighlightedText } from './HighlightedText';
 import type { LoadedPdf } from './pdfBrowser';
 import { ScanReveal, type ScanImages } from './ScanReveal';
@@ -80,8 +81,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     if (source.kind === 'pdf') void loadPdfTools().then(({ closePdf }) => closePdf(source.pdf));
   }
 
-  async function readFile(file: File): Promise<void> {
-    const extension = file.name.toLowerCase().split('.').pop();
+  async function readFile(file: File, extension: string): Promise<void> {
     if (extension === 'txt') {
       setText(await file.text());
       setSource({ kind: 'txt', name: file.name });
@@ -113,8 +113,9 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
 
   async function handleFiles(files: File[]) {
     const [file] = files;
-    const extension = file.name.toLowerCase().split('.').pop() ?? '';
     setError(null);
+    let extension = file.name.toLowerCase().split('.').pop() ?? '';
+    if (extension !== 'txt' && extension !== 'docx' && (await isPdf(file))) extension = 'pdf';
     if (!['txt', 'docx', 'pdf'].includes(extension)) {
       setError(t.errorFileType);
       return;
@@ -125,7 +126,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     setLargeFile(file.size > LARGE_FILE);
     setReading(true);
     try {
-      await readFile(file);
+      await readFile(file, extension);
     } catch {
       setError(t.errorFileRead);
     } finally {
@@ -211,7 +212,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
         const boxes = boxesFor(active, source.pdf.pages, source.spans, measureText);
         const images = await renderRedactedPages(source.pdf, boxes);
         const bytes = await getFilterApi().assembleRedactedPdf(source.bytes, images);
-        downloadBlob(bytes, 'application/pdf', filteredName(source.name));
+        downloadBlob(bytes, 'application/pdf', filteredName(source.name, '.pdf'));
       } else if (source.kind === 'docx') {
         downloadBlob(await getFilterApi().docxRedact(source.bytes, active), DOCX_TYPE, filteredName(source.name));
       } else {

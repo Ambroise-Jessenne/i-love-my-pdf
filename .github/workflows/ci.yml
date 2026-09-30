@@ -24,8 +24,8 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      - name: Install Playwright's Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install Playwright's Chromium and WebKit (Safari's engine)
+        run: npx playwright install --with-deps chromium webkit
 
       - name: End-to-end tests (builds the site first)
         run: npm run test:e2e
