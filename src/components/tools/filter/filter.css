@@ -239,8 +239,43 @@
   word-break: break-word;
 }
 
-.filter-output {
-  animation: rise-in var(--duration-slow) var(--ease-out) both;
+/* The result has the portrait's frame: the filtered text fills the place the painting held, so nothing on
+   the page moves when one replaces the other. */
+.filter-result {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  margin-inline: auto;
+  aspect-ratio: 668 / 933;
+}
+
+/* During the cross-fade the scanner lies on top of the result, which fades in underneath. */
+.filter-result > .scan-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  aspect-ratio: auto;
+}
+
+.filter-result-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 0;
+  animation: fade-in var(--duration-slow) var(--ease-out) both;
+}
+
+.filter-result-body .filter-output {
+  flex: 1 1 auto;
+  min-height: 8rem;
+  max-height: none;
 }
 
 .pii {
@@ -330,13 +365,17 @@
   }
 }
 
-/* The portrait fills the right panel, whole (never cropped), before and during the scan. Its frame keeps
-   the painting's proportions, so it stays the same size when the left panel switches to the review. */
+/* The portrait fills the right panel, whole (never cropped), before and during the scan. Its frame has the
+   painting's proportions, so it stays the same size when the left panel switches to the review; if the left
+   panel is taller and stretches the frame, the painting is stretched with it rather than leaving white bands.
+   The width is capped for single-column layouts, where the frame would otherwise grow very tall. */
 .scan-stage {
   position: relative;
   flex: 1 0 auto;
+  width: 100%;
+  max-width: 32rem;
+  margin-inline: auto;
   aspect-ratio: 668 / 933;
-  max-height: 80vh;
   overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -348,7 +387,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: fill;
 }
 
 .scan-caption {
@@ -411,7 +450,7 @@
 }
 
 .scan.is-leave {
-  animation: scan-leave var(--leave-duration) var(--ease-out) forwards;
+  animation: scan-leave var(--leave-duration) var(--ease-in-out) forwards;
 }
 
 @keyframes scan-reveal {
@@ -426,10 +465,9 @@
   }
 }
 
+/* Opacity only: blurring or scaling a large image every frame makes the fade stutter. */
 @keyframes scan-leave {
   to {
     opacity: 0;
-    transform: scale(0.97);
-    filter: blur(3px);
   }
 }

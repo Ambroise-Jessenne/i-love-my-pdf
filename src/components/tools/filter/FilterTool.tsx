@@ -47,6 +47,8 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
   const [reading, setReading] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [scanning, setScanning] = useState(false);
+  // The scanner has started fading out: the result fades in underneath it, in the same place.
+  const [revealed, setRevealed] = useState(false);
   const [largeFile, setLargeFile] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -147,6 +149,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     try {
       setDetections(await getFilterApi().detect(text, strict));
       setDisabled(new Set());
+      setRevealed(false);
       setScanning(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
       setStep('review');
     } catch {
@@ -234,9 +237,12 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
     setDisabled(new Set());
     setOutput('');
     setScanning(false);
+    setRevealed(false);
     setLargeFile(false);
     setError(null);
   }
+
+  const revealing = scanning && !revealed;
 
   const fileMeta =
     source.kind === 'pdf'
@@ -308,15 +314,15 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
           <div className="filter-panel">
             <h2 className="filter-panel-title">{t.reviewTitle}</h2>
             <p className="filter-help">{t.reviewHelp}</p>
-            {!scanning && strictToggle}
+            {!revealing && strictToggle}
             <p className="filter-count" aria-live="polite">
-              {scanning && <span className="spinner" aria-hidden="true" />}
-              {scanning ? t.scanning : active.length === 0 ? t.noneFound : t.found.replace('{count}', String(active.length))}
+              {revealing && <span className="spinner" aria-hidden="true" />}
+              {revealing ? t.scanning : active.length === 0 ? t.noneFound : t.found.replace('{count}', String(active.length))}
             </p>
             <HighlightedText
               id={REVIEW_ID}
               text={text}
-              detections={scanning ? NO_DETECTIONS : detections}
+              detections={revealing ? NO_DETECTIONS : detections}
               disabled={disabled}
               typeLabels={t.types}
               onToggle={toggle}
@@ -324,7 +330,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
             <button
               type="button"
               className="btn btn-secondary"
-              disabled={scanning}
+              disabled={revealing}
               onMouseDown={(event) => event.preventDefault()}
               onClick={maskSelection}
             >
@@ -336,7 +342,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
         <div className="filter-panel">
           <div className="filter-panel-head">
             <h2 className="filter-panel-title">{t.resultTitle}</h2>
-            {step === 'review' && !scanning && (
+            {step === 'review' && !revealing && (
               <span className="seal">
                 <img src={scan.seal} alt="" />
                 {t.protectedBadge}
@@ -345,7 +351,7 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
           </div>
           {step === 'review' && (
             <p className="sr-only" role="status">
-              {scanning ? '' : t.resultReady}
+              {revealing ? '' : t.resultReady}
             </p>
           )}
           {step === 'input' ? (
@@ -354,40 +360,51 @@ export default function FilterTool({ t, scan }: FilterToolProps) {
               <img className="scan-img" src={scan.exposed} alt="" decoding="async" />
               <p className="scan-caption">{t.resultPlaceholder}</p>
             </div>
-          ) : scanning ? (
-            <ScanReveal images={scan} label={t.scanLabel} onDone={() => setScanning(false)} />
           ) : (
-            <>
-              <pre className="filter-output" data-testid="filter-output">
-                {output}
-              </pre>
-              <div className="filter-actions rise-in">
-                <button type="button" className="btn" onClick={copy}>
-                  <Icon key={copied ? 'done' : 'idle'} name={copied ? 'check' : 'copy'} className="icon-pop" />
-                  {copied ? t.copied : t.copy}
-                </button>
-                <button type="button" className="btn btn-secondary" onClick={exportFile} disabled={exporting}>
-                  {exporting ? <span className="spinner" aria-hidden="true" /> : <Icon name="download" />}
-                  {exporting && source.kind === 'pdf' ? t.redacting : source.kind === 'pdf' ? t.downloadPdf : t.download}
-                </button>
-                {source.kind === 'pdf' && (
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => downloadText(output, filteredName(source.name, '.txt'))}
-                  >
-                    <Icon name="download" />
-                    {t.downloadText}
-                  </button>
-                )}
-                <button type="button" className="btn btn-ghost" onClick={restart}>
-                  <Icon name="restart" />
-                  {t.restart}
-                </button>
-              </div>
-              {source.kind === 'pdf' && <p className="filter-note">{t.pdfNote}</p>}
-              {source.kind === 'docx' && <p className="filter-note">{t.docxNote}</p>}
-            </>
+            // The filtered text takes the portrait's place: it fades in underneath while the scanner fades out.
+            <div className="filter-result">
+              {scanning && (
+                <ScanReveal
+                  images={scan}
+                  label={t.scanLabel}
+                  onLeave={() => setRevealed(true)}
+                  onDone={() => setScanning(false)}
+                />
+              )}
+              {!revealing && (
+                <div className="filter-result-body">
+                  <pre className="filter-output" data-testid="filter-output">
+                    {output}
+                  </pre>
+                  <div className="filter-actions">
+                    <button type="button" className="btn" onClick={copy}>
+                      <Icon key={copied ? 'done' : 'idle'} name={copied ? 'check' : 'copy'} className="icon-pop" />
+                      {copied ? t.copied : t.copy}
+                    </button>
+                    <button type="button" className="btn btn-secondary" onClick={exportFile} disabled={exporting}>
+                      {exporting ? <span className="spinner" aria-hidden="true" /> : <Icon name="download" />}
+                      {exporting && source.kind === 'pdf' ? t.redacting : source.kind === 'pdf' ? t.downloadPdf : t.download}
+                    </button>
+                    {source.kind === 'pdf' && (
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => downloadText(output, filteredName(source.name, '.txt'))}
+                      >
+                        <Icon name="download" />
+                        {t.downloadText}
+                      </button>
+                    )}
+                    <button type="button" className="btn btn-ghost" onClick={restart}>
+                      <Icon name="restart" />
+                      {t.restart}
+                    </button>
+                  </div>
+                  {source.kind === 'pdf' && <p className="filter-note">{t.pdfNote}</p>}
+                  {source.kind === 'docx' && <p className="filter-note">{t.docxNote}</p>}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

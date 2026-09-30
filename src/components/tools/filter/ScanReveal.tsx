@@ -12,21 +12,25 @@ export interface ScanImages {
 interface ScanRevealProps {
   images: ScanImages;
   label: string;
+  /** Called when the scanner starts fading out, so what comes next can fade in at the same time. */
+  onLeave?: () => void;
   onDone: () => void;
 }
 
 const LOAD_MAX_MS = 800; // never wait longer than this for the images
 const SCAN_MS = 1600;
 const HOLD_MS = 1100; // the original painting, apple and all, stays on screen a moment
-const LEAVE_MS = 380;
+const LEAVE_MS = 480;
 
 type Phase = 'load' | 'scan' | 'hold' | 'leave';
 
 /** Sweeps a scanner bar over the exposed image; the protected one appears in its wake. */
-export function ScanReveal({ images, label, onDone }: ScanRevealProps) {
+export function ScanReveal({ images, label, onLeave, onDone }: ScanRevealProps) {
   const [phase, setPhase] = useState<Phase>('load');
   const done = useRef(onDone);
   done.current = onDone;
+  const leave = useRef(onLeave);
+  leave.current = onLeave;
 
   useEffect(() => {
     let cancelled = false;
@@ -47,7 +51,13 @@ export function ScanReveal({ images, label, onDone }: ScanRevealProps) {
   useEffect(() => {
     const next: Partial<Record<Phase, [number, () => void]>> = {
       scan: [SCAN_MS, () => setPhase('hold')],
-      hold: [HOLD_MS, () => setPhase('leave')],
+      hold: [
+        HOLD_MS,
+        () => {
+          setPhase('leave');
+          leave.current?.();
+        },
+      ],
       leave: [LEAVE_MS, () => done.current()],
     };
     const step = next[phase];
