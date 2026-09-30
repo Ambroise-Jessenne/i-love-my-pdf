@@ -1,6 +1,6 @@
 export const fr = {
   meta: {
-    title: 'I Love My P.D.F. — vos données restent chez vous',
+    title: 'I Love My P.D.F. : Private Data Filter, utilisez l’IA sans divulguer vos données',
     description:
       'Filtrez vos données personnelles, fusionnez, divisez et convertissez vos PDF directement dans votre navigateur. Rien n’est envoyé sur Internet.',
   },
