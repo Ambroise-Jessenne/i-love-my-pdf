@@ -38,7 +38,8 @@ const csp = [
     <meta name="referrer" content="no-referrer" />
     <title>{title ? `${title} — I Love My P.D.F.` : t.meta.title}</title>
     <meta name="description" content={t.meta.description} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- The query string changes with the icon, so browsers drop the one they cached. -->
+    <link rel="icon" href="/favicon.svg?v=lock" type="image/svg+xml" />
   </head>
   <body>
     <FlowField />
@@ -46,8 +47,17 @@ const csp = [
     <header class="site-header">
       <div class="container header-inner">
         <a class="logo" href={`/${lang}/`}>
-          <span class="logo-mark" aria-hidden="true">♥</span>
-          <span>I Love My <strong>P.D.F.</strong></span>
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="-8 -9 16 18" width="16" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M-5-3C-5-5.2-3.3-7-1-7C1.2-7 3-5.2 3-3" />
+              <rect x="-6" y="-2" width="12" height="10" rx="1" />
+              <circle cx="0" cy="2" r="0.8" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <span class="logo-text">
+            <span>I Love My <strong>P.D.F.</strong></span>
+            <span class="logo-acronym"><b>P</b>rivate <b>D</b>ata <b>F</b>ilter</span>
+          </span>
         </a>
         <nav aria-label={t.nav.label}>
           <a href={`/${lang}/filter/`} aria-current={current(`/${lang}/filter/`)}>{t.nav.filter}</a>

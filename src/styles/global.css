@@ -228,6 +228,23 @@ a {
   color: var(--color-accent);
 }
 
+.logo-text {
+  display: grid;
+  line-height: 1.15;
+}
+
+/* What P.D.F. stands for, its initials in the accent colour. */
+.logo-acronym {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.02em;
+}
+
+.logo-acronym b {
+  color: var(--color-accent);
+  font-weight: 800;
+}
+
 .logo-mark {
   display: inline-grid;
   place-items: center;
